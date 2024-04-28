@@ -3,14 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:38:45 by haalouan          #+#    #+#             */
-/*   Updated: 2024/04/28 15:29:49 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/28 18:34:02 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
+void remove_quotes(t_list** list)
+{
+    int i = 0;
+    int k;
+    int l;
+    while (list[i])
+    {
+        k = 0;
+        int j = 0;
+        while (list[i]->cmd && list[i]->cmd[j] != '\0')
+        {
+            if (list[i]->cmd[j] != '\'' && list[i]->cmd[j] != '"')
+            {
+                list[i]->cmd[k] = list[i]->cmd[j];
+                k++;
+                j++;
+            }
+            else
+                j++;
+        }
+        if (list[i]->cmd)
+            list[i]->cmd[k] = '\0';
+        k = 0;
+        j = 0;
+        while (list[i]->redir && list[i]->redir[j] != '\0')
+        {
+            if (list[i]->redir[j] != '\'' && list[i]->redir[j] != '"')
+            {
+                list[i]->redir[k] = list[i]->redir[j];
+                k++;
+                j++;
+            }
+            else
+                j++;
+        }
+        if (list[i]->redir)
+            list[i]->redir[k] = '\0';
+        k = 0;
+        j = 0;
+        l = 0;
+        while (list[i]->args && list[i]->args[l])
+        {
+            k = 0;
+            j = 0;
+            while (list[i]->args && list[i]->args[l] && list[i]->args[l][j] != '\0')
+            {
+                if (list[i]->args[l][j] != '\'' && list[i]->args[l][j] != '"')
+                {
+                    list[i]->args[l][k] = list[i]->args[l][j];
+                    k++;
+                    j++;
+                }
+                else
+                    j++;
+            }
+            if (list[i]->args)
+                list[i]->args[l][k] = '\0';
+            l++;
+        }
+        i++;
+    }
+    i = 0;
+}
+
 
 void add_tab(char *line, char **tab, int len)
 {
@@ -59,8 +125,8 @@ void handele_word(char **le, char **tab)
             break;
     }
     *le += i;
-    int j = count_quote(line, i);
-    add_tab(line , tab, i - j);
+    // int j = count_quote(line, i);
+    add_tab(line , tab, i);
 }
 
 void handele_line(char **line, char **tab, t_check check)
@@ -147,11 +213,12 @@ t_list **parssing(char *line)
     if (!list)
         exit(1);
     continue_parssing(list, tab, line);
-    // if (check_tab(list, line) == 1)
-    // {
-    //     handele_error();
-    //     return NULL;
-    // }
+    if (check_tab(list) == 1)
+    {
+        handele_error();
+        return NULL;
+    }
+    remove_quotes(list);
     print_tab(tab, line, list);
     return list;
 }

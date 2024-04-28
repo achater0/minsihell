@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:27:26 by haalouan          #+#    #+#             */
-/*   Updated: 2024/04/28 15:46:06 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/28 17:44:23 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ char    *ft_strncpy(char *dest, const char *src, int len)
 	k = 0;
 	while (src[i] != '\0' && len > 0)
 	{
-		if (src[i] == '\'' || src[i] == '\"')
-		{
-			i++;
-			continue;
-		}
 		dest[k] = src[i];
 		i++;
 		k++;
