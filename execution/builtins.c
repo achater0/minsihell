@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/04/28 18:55:10 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/28 21:14:49 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,30 @@ void	ft_pwd()
 	printf("%s\n", pwd);
 }
 
+int	ft_is_alpha(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}
 
 void	ft_remove(t_env **env_list, char *key)
 {
 	t_env *temp = *env_list;
 	t_env *prev = NULL;
+	int i = 0;
 
 	while(env_list && temp->next != NULL)
 	{
+		while(key[i])
+		{
+			if(ft_is_alpha(key[i]) == 0 && key[i] != '_')
+			{
+				printf("minishell: unset: `%s': not a valid identifier\n", key);
+				return;
+			}
+			i++;
+		}
 		if (ft_strcmp(temp->key, key) != 0)
 		{
 			prev = temp;
@@ -177,9 +193,7 @@ void	ft_builtins(t_list *cmds, t_env **env_list)
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0 || ft_strcmp(cmds->cmd, "PWD") == 0)
 		ft_pwd();
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-	{
 		*env_list = ft_unset(env_list,cmds->args);
-	}
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
 		ft_exit(cmds->args);
 }
