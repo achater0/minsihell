@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/04/30 14:37:24 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/30 18:37:45 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_export(char **args, t_env **env)
 {
 	t_env *tmp;
 	int i = 0;
+	// char **split;
 
 	tmp = ft_copy_list(*env);
 	if (args == NULL)
@@ -76,15 +77,17 @@ void	ft_export(char **args, t_env **env)
 	{
 		while(args[i])
 		{
-			if(check_args(args[i]) == 1)
+			if(check_args(args[i], "export") == 1)
 			{
 				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
 				return;
 			}
-			i++;
 			// else
 			// {
+			// 	split = ft_split(args[i], '=');
+
 			// }
+			i++;
 		}
 	}
 }
@@ -201,7 +204,7 @@ void	ft_remove(t_env **env_list, char *key)
 
 	while(env_list && temp->next != NULL)
 	{
-		if (check_args(key) == 1)
+		if (check_args(key, "unset") == 1)
 		{
 			printf("minishell: unset: `%s': not a valid identifier\n", key);
 			return;

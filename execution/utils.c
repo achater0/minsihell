@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:31:52 by achater           #+#    #+#             */
-/*   Updated: 2024/04/30 13:30:22 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/30 15:11:07 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,31 @@ int	ft_is_alpha(char c)
 	return (0);
 }
 
-int check_args(char *args)
+int check_args(char *args,char *str)
 {
 	int i;
 
 	i = 0;
-	while(args[i])
-	{
-		if(i == 0 && ft_is_alpha(args[i]) == 0 && args[i] != '_')
-			return (1);
-		if(ft_is_alpha(args[i]) == 0 && args[i] != '_' && (args[i] < '0' || args[i] > '9'))
-			return (1);
-		i++;
-	}
+	if (ft_strcmp(str, "unset") == 0)
+		while(args[i])
+		{
+			if(i == 0 && ft_is_alpha(args[i]) == 0 && args[i] != '_')
+				return (1);
+			if(ft_is_alpha(args[i]) == 0 && args[i] != '_' && (args[i] < '0' || args[i] > '9'))
+				return (1);
+			i++;
+		}
+	else
+		while(args[i])
+		{
+			if(i == 0 && ft_is_alpha(args[i]) == 0 && args[i] != '_')
+				return (1);
+			if(ft_is_alpha(args[i]) == 0 && args[i] != '_' && (args[i] < '0' || args[i] > '9')
+				&& args[i] != '=' && (args[i] != '+'))
+				return (1);
+			if(args[i] == '+' && args[i + 1] != '=')
+				return (1);
+			i++;
+		}
 	return (0);
 }
