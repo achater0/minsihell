@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/04/28 20:56:56 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/30 13:27:50 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int ft_lstsize(t_env *lst);
 t_env	*ft_lstlast(t_env *lst);
 void execution(t_list **list, t_env *env_list);
 void set_env(char **env, t_env **env_list);
+int	ft_is_alpha(char c);
+int check_args(char *args);
 
 
 

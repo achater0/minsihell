@@ -6,11 +6,88 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/04/28 21:14:49 by achater          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:37:24 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_env	*ft_copy_list(t_env *env_list)
+{
+	t_env *new;
+	t_env *tmp;
+
+	new = NULL;
+	tmp = env_list;
+	while (tmp)
+	{
+		ft_lstadd_back(&new, ft_lstnew(tmp->key, tmp->value));
+		tmp = tmp->next;
+	}
+	return (new);
+}
+
+
+void	sort_and_print_env(t_env *lst, int (*cmp)(char*,char*))
+{
+	char	*swap;
+	char	*swap2;
+	t_env	*tmp;
+
+	tmp = lst;
+	while(lst->next != NULL)
+	{
+		if (((*cmp)(lst->key, lst->next->key)) > 0)
+		{
+			swap = lst->key;
+			swap2 = lst->value;
+			lst->value = lst->next->value;
+			lst->key = lst->next->key;
+			lst->next->key = swap;
+			lst->next->value = swap2;
+			lst = tmp;
+		}
+		else
+			lst = lst->next;
+	}
+	lst = tmp;
+	while(lst)
+	{
+		if((*cmp)(lst->key, "_") != 0 && lst->value != NULL)
+			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
+		else if((*cmp)(lst->key, "_") != 0 && lst->value == NULL)
+			printf("declare -x %s\n", lst->key);
+		lst = lst->next;
+	}
+}
+
+void	ft_export(char **args, t_env **env)
+{
+	t_env *tmp;
+	int i = 0;
+
+	tmp = ft_copy_list(*env);
+	if (args == NULL)
+	{
+		sort_and_print_env(tmp, ft_strcmp);
+		return;
+	}
+	else
+	{
+		while(args[i])
+		{
+			if(check_args(args[i]) == 1)
+			{
+				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
+				return;
+			}
+			i++;
+			// else
+			// {
+			// }
+		}
+	}
+}
 
 void ft_cd(char	**args)
 {
@@ -89,7 +166,8 @@ void	ft_env(t_env *env_list, char **args)
 	}
 	while (env_list)
 	{
-		printf("%s=%s\n", env_list->key, env_list->value);
+		if(env_list->value != NULL)
+			printf("%s=%s\n", env_list->key, env_list->value);
 		env_list = env_list->next;
 	}
 }
@@ -115,29 +193,18 @@ void	ft_pwd()
 	printf("%s\n", pwd);
 }
 
-int	ft_is_alpha(char c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
 
 void	ft_remove(t_env **env_list, char *key)
 {
 	t_env *temp = *env_list;
 	t_env *prev = NULL;
-	int i = 0;
 
 	while(env_list && temp->next != NULL)
 	{
-		while(key[i])
+		if (check_args(key) == 1)
 		{
-			if(ft_is_alpha(key[i]) == 0 && key[i] != '_')
-			{
-				printf("minishell: unset: `%s': not a valid identifier\n", key);
-				return;
-			}
-			i++;
+			printf("minishell: unset: `%s': not a valid identifier\n", key);
+			return;
 		}
 		if (ft_strcmp(temp->key, key) != 0)
 		{
@@ -172,6 +239,8 @@ t_env	*ft_unset(t_env **env_list, char **args)
 
 	if (args == NULL)
 		return (*env_list);
+	if(env_list == NULL)
+		return (NULL);
 	while (args[i])
 	{
 		ft_remove(env_list, args[i]);
@@ -188,8 +257,8 @@ void	ft_builtins(t_list *cmds, t_env **env_list)
 		ft_cd(cmds->args);
 	else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
 		ft_env(*env_list, cmds->args);
-	// else if (ft_strcmp(cmds->cmd, "export") == 0)
-	// 	ft_export(cmds->args);
+	else if (ft_strcmp(cmds->cmd, "export") == 0)
+		ft_export(cmds->args, env_list);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0 || ft_strcmp(cmds->cmd, "PWD") == 0)
 		ft_pwd();
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
@@ -202,7 +271,17 @@ void set_env(char **env, t_env **env_list)
 {
 	int i = 0;
 	char **splited_env = NULL;
+	char *pdw = NULL;
 
+	pdw = getcwd(NULL, 0);
+	if(env == NULL)
+	{
+		ft_lstadd_back(env_list, ft_lstnew("PWD", pdw));
+		ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));
+		ft_lstadd_back(env_list, ft_lstnew("SHLVL", "1"));
+		ft_lstadd_back(env_list, ft_lstnew("_", "/usr/bin/env"));
+		return;
+	}
 	while(env[i])
 	{
 		splited_env = ft_split(env[i], '=');
@@ -210,26 +289,6 @@ void set_env(char **env, t_env **env_list)
 		i++;
 	}
 }
-
-// int main(int argc, char **argv, char **env)
-// {
-// 	// printf("%s\n", argv[1]);
-// 	t_list *cmds;
-// 	cmds = malloc(sizeof(t_list));
-// 	cmds->redir = NULL;
-// 	cmds->cmd = "cd";
-// 	cmds->args = ft_split("", ' ');
-// 	cmds->next = NULL;
-// 	t_env *env_list = NULL;
-// 	t_env *temp = env_list;
-
-// 	int i = 0;
-
-// 	set_env(env, &env_list);
-
-// 	ft_builtins(cmds, &env_list);
-// 	return (0);
-// }
 
 void execution(t_list **list, t_env *env_list)
 {
