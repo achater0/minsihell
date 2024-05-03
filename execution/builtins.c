@@ -6,104 +6,38 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/04/30 18:37:45 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/03 15:34:38 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env	*ft_copy_list(t_env *env_list)
+void	change_value(t_env **env_list,char *value)
 {
-	t_env *new;
-	t_env *tmp;
-
-	new = NULL;
-	tmp = env_list;
-	while (tmp)
-	{
-		ft_lstadd_back(&new, ft_lstnew(tmp->key, tmp->value));
-		tmp = tmp->next;
-	}
-	return (new);
+	free((*env_list)->value);
+	(*env_list)->value = ft_strdup(value);
 }
 
-
-void	sort_and_print_env(t_env *lst, int (*cmp)(char*,char*))
+void ft_cd(char	**args, t_env **env_list)
 {
-	char	*swap;
-	char	*swap2;
-	t_env	*tmp;
+	char *oldpwd;
+	char *newpwd;
 
-	tmp = lst;
-	while(lst->next != NULL)
-	{
-		if (((*cmp)(lst->key, lst->next->key)) > 0)
-		{
-			swap = lst->key;
-			swap2 = lst->value;
-			lst->value = lst->next->value;
-			lst->key = lst->next->key;
-			lst->next->key = swap;
-			lst->next->value = swap2;
-			lst = tmp;
-		}
-		else
-			lst = lst->next;
-	}
-	lst = tmp;
-	while(lst)
-	{
-		if((*cmp)(lst->key, "_") != 0 && lst->value != NULL)
-			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
-		else if((*cmp)(lst->key, "_") != 0 && lst->value == NULL)
-			printf("declare -x %s\n", lst->key);
-		lst = lst->next;
-	}
-}
-
-void	ft_export(char **args, t_env **env)
-{
-	t_env *tmp;
-	int i = 0;
-	// char **split;
-
-	tmp = ft_copy_list(*env);
-	if (args == NULL)
-	{
-		sort_and_print_env(tmp, ft_strcmp);
-		return;
-	}
-	else
-	{
-		while(args[i])
-		{
-			if(check_args(args[i], "export") == 1)
-			{
-				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
-				return;
-			}
-			// else
-			// {
-			// 	split = ft_split(args[i], '=');
-
-			// }
-			i++;
-		}
-	}
-}
-
-void ft_cd(char	**args)
-{
+	oldpwd = getcwd(NULL, 0);
 	if (args == NULL )
-	{
 		chdir(getenv("HOME"));
-		return;
-	}
-	if (chdir(args[0]) == -1)
-	{
+	else if (chdir(args[0]) == -1)
 		printf("minishell: cd: %s: No such file or directory\n", args[0]);
-		return;
+	newpwd = getcwd(NULL, 0);
+	while((*env_list)->next)
+	{
+		if(ft_strcmp((*env_list)->key, "OLDPWD") == 0)
+			change_value(env_list, oldpwd);
+		if(ft_strcmp((*env_list)->key, "PWD") == 0)
+			change_value(env_list, newpwd);
+		(*env_list) = (*env_list)->next;
 	}
+	return;
 }
 
 int cmp(char *s1)
@@ -252,12 +186,12 @@ t_env	*ft_unset(t_env **env_list, char **args)
 	return (*env_list);
 }
 
-void	ft_builtins(t_list *cmds, t_env **env_list)
+void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
 		ft_echo(cmds->args);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds->args);
+		ft_cd(cmds->args, env_list);
 	else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
 		ft_env(*env_list, cmds->args);
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
@@ -268,6 +202,9 @@ void	ft_builtins(t_list *cmds, t_env **env_list)
 		*env_list = ft_unset(env_list,cmds->args);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
 		ft_exit(cmds->args);
+	else
+		handle_cmd(cmds, env);
+
 }
 
 void set_env(char **env, t_env **env_list)
@@ -293,9 +230,9 @@ void set_env(char **env, t_env **env_list)
 	}
 }
 
-void execution(t_list **list, t_env *env_list)
+void execution(t_list **list, t_env *env_list,char **env)
 {
-	ft_builtins(*list, &env_list);
+	ft_builtins(*list, &env_list, env);
 	// while(env_list)
 	// {
 	// 	printf("%s=%s\n", env_list->key, env_list->value);

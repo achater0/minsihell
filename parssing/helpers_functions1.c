@@ -1,107 +1,73 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers_functions.c                                :+:      :+:    :+:   */
+/*   helpers_functions1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:27:26 by haalouan          #+#    #+#             */
-/*   Updated: 2024/04/28 17:44:23 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/05/02 01:12:16 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-size_t	ft_strlen(const char *str)
+char *ft_strstr(const char *haystack, const char *needle)
 {
+    const char *h;
+    const char *n;
+        
+    if (!needle || !*needle)
+        return (char *)haystack;
+
+    while (*haystack != '\0')
+    {
+        h = haystack;
+        n = needle;
+        while (h && n && *h == *n && *n != '\0')
+        {
+            h++;
+            n++;
+        }
+        if (*n == '\0')
+            return (char *)haystack;
+        haystack++;
+    }
+    return NULL;
+}
+
+
+char	*ft_strdup(const char *s1)
+{
+	char	*s2;
+	size_t	len;
 	size_t	i;
 
-	if (str == NULL)
-		return 0;
 	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char    *ft_strncpy(char *dest, const char *src, int len)
-{
-	int i;
-	int k;
-
-    i = 0;
-	k = 0;
-	while (src[i] != '\0' && len > 0)
+	len = ft_strlen(s1);
+	s2 = (char *)malloc(len + 1);
+	if (s2 == NULL)
+		return (NULL);
+	while (i < len)
 	{
-		dest[k] = src[i];
+		s2[i] = s1[i];
 		i++;
-		k++;
-		len--;
 	}
-	dest[k] = '\0';
-	return (dest);
-}
-
-void check_check(char *line, t_check *check)
-{
-        if (is_character(*line) == 1 || *line == '\"' || *line == '\'')
-            check->find_word = 1;
-        if (*line == '$')
-            check->find_$ = 1;
-        if (*line == '|')
-            check->find_pipe = 1;
-        if (*line == '>')
-        {
-			line++;
-            if (*line == '>')
-                check->find_append_op = 1;
-            else if (check->find_append_op == -1)
-                check->find_in_re = 1;
-        }
-        if (*line == '<')
-        {
-			line++;
-            if (*line == '<')
-                check->find_here_doc = 1;
-            else if (check->find_here_doc == -1)
-                check->find_out_re = 1;
-        }
-}
-
-void check_init(t_check *check)
-{
-    check->find_word = -1;
-    check->find_pipe = -1;
-    check->find_in_re = -1;
-    check->find_out_re = -1;
-    check->find_append_op = -1;
-    check->find_here_doc = -1;
-    check->find_$ = -1;
+	s2[i] = '\0';
+	return (s2);
 }
 
 
-
-char *ft_strcat(char *dest, char *src)
+int	ft_isdigit(int c)
 {
-	int i;
-	int j;
-
-	i = 0;
-	while (dest[i] != '\0')
-		i++;
-	j = 0;
-	while (src[j] != '\0')
-	{
-		dest[i + j] = src[j];
-		j++;
-	}
-	dest[i + j] = '\0';
-	return (dest);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }
 
 int is_character(char c)
 {
-	if (c != '<' && c != '>' && c != '\'' && c != '\"' && c != '$' && c != '|' && c != ' ' && c != '\t')
+	if (c != '<' && c != '>' && c != '\'' && c != '\"' && c != '|' && c != ' ' && c != '\t')
 		return 1;
 	return 0;
 }
@@ -113,7 +79,7 @@ void print_tab(char **tab, char *line, t_list **list)
     (void)line;
     // if (!tab)
     //     return ;
-    // while (i < count_lists(line))
+    // while (i < count_cmds(line))
     // {
     //     printf(""ANSI_COLOR_GREEN  "      %s\n" ANSI_RESET_ALL "", tab[i]);
     //     printf("----------------------------------------------------------------------------\n");
@@ -122,6 +88,7 @@ void print_tab(char **tab, char *line, t_list **list)
     // i = 0;
     while (list[i] != NULL)
     {
+        printf("*-------------------------*\n");
         printf("|           (%d)           |\n", i + 1);
         printf("*-------------------------*\n");
         printf("|");

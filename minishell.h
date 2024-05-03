@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/04/30 15:00:23 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/03 12:24:57 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
-
+#include <string.h>
 
 //
 #define ANSI_RESET_ALL          "\x1b[0m"
@@ -61,7 +61,6 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
-
 int ft_strcmp(char *arg, char *str);
 t_env	*ft_lstnew(char *key , char *content);
 t_env *ft_lstlast(t_env *lst);
@@ -69,38 +68,90 @@ void ft_lstadd_back(t_env **lst, t_env *new);
 char **ft_split(char const *s, char c);
 int ft_lstsize(t_env *lst);
 t_env	*ft_lstlast(t_env *lst);
-void execution(t_list **list, t_env *env_list);
+void execution(t_list **list, t_env *env_list,char **env);
 void set_env(char **env, t_env **env_list);
 int	ft_is_alpha(char c);
 int check_args(char *args,char *str);
+void	ft_export(char **args, t_env **env);
+void	handle_cmd(t_list *cmds,char **env);
+char	*ft_strjoin3(char *s1, char *s2, char *s3);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+
+/*******************************************************parssing*******************************************************/
+
+//expend2
+char *ft_str_replace(const char *source, const char *pattern, const char *replacement);
+char *get_env_value(char *key, t_env *export_i);
+char *get_env_key(char *str, int i);
+char *remove_$(char *tab, int check);
+int expend_in_double_quote(char **tab, int i, int j, t_env *env_list);
+
+//expend1
+int continue_expend(char **tab, int i, int j, t_env *env_list);
+void expend(char **tab, t_env *env_list);
 
 
+//helpers_function1
+char *ft_strstr(const char *haystack, const char *needle);
+char	*ft_strdup(const char *s1);
+int	ft_isdigit(int c);
+int is_character(char c);
+void print_tab(char **tab, char *line, t_list **list);//
 
-
-//utils
+//helpers_function2
+int	ft_isalpha(int c);
+int	ft_isalnum(int c);
 size_t	ft_strlen(const char *str);
 char    *ft_strncpy(char *dest, const char *src, int len);
 char *ft_strcat(char *dest, char *src);
-int is_character(char c);
 
-
-//parssing
-t_list **parssing(char *line);
+//syntax_errors
 void handele_error();
-int count_lists(char *line);
-void check_init(t_check *check);
-void check_check(char *line, t_check *check);
-int count_quote(char *line, int len);
-void handele_error();
-void add_tab(char *line, char **tab, int len);
-int count_pipe(char **tab, int len);
-char **handele_parssing(char *line);
-// int  check_tab(t_list **tab, char *line);
-void continue_parssing(t_list **temp, char **tab, char *line);
-void print_tab(char **tab, char *line, t_list **list);
-void remove_quotes(t_list** list);
+int count_single_quote(char *line, int *i);
+int count_double_quote(char *line, int *i);
+int count_quote(char *line);
 int  check_tab(t_list **list);
-//execution
 
+//check
+void check_check(char *line, t_check *check);
+void check_init(t_check *check);
+int check(char **tab);
+int check_error(char **tab);
+
+//parssing1
+t_list **parssing(char *line, t_env *env_list);
+char **handele_parssing(char *line);
+void add_tab(char *line, char **tab, int len);
+
+//remove_quotes
+void handele_cmd(t_list **list, int *i, int *j, int *k);
+void handele_redir(t_list **list, int *i, int *j, int *k);
+void continue_handele_args(t_list **list, int *i, int *j, int *k, int *l);
+void handele_args(t_list **list, int *i, int *j, int *k, int *l);
+void remove_quotes(t_list** list);
+
+//handele_line
+void continue_handele_word(char *line, int *i);
+void handele_word(char **le, char **tab);
+void continue_handele_line(t_check check, char **line, char **tab);
+void handele_line(char **line, char **tab, t_check check);
+
+//count_cmds
+int is_quote(char c);
+char *continue_count_cmds(char *line, int *count);
+int count_cmds(char *line);
+
+//parssing1
+t_list **parssing(char *line, t_env *env_list);
+char **handele_parssing(char *line);
+void add_tab(char *line, char **tab, int len);
+
+//parssing2
+void continue_parssing(t_list **list, char **tab, char *line, t_env *env_list);
+
+//parssing3
+int count_pipe(char **tab, int len);
+int finnd_pipe(char **tab, int count);
+int find_redir(char **tab, int count);
 
 #endif
