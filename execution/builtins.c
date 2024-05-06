@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/03 15:34:38 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/06 10:06:55 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,8 @@ int cmp(char *s1)
 	}
 	return (1);
 }
-void	ft_echo(char **args)
+void	ft_echo(char **args, int n, int j, int x)
 {
-	int j;
-	int n;
-	int x;
-
-	j = 0;
-	n = 0;
-	x = 0;
 	if (args == NULL)
 	{
 		printf("\n");
@@ -189,7 +182,7 @@ t_env	*ft_unset(t_env **env_list, char **args)
 void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		ft_echo(cmds->args);
+		ft_echo(cmds->args, 0, 0, 0);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
 		ft_cd(cmds->args, env_list);
 	else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
@@ -230,12 +223,50 @@ void set_env(char **env, t_env **env_list)
 	}
 }
 
-void execution(t_list **list, t_env *env_list,char **env)
+void execution(t_list **list, t_env *env_list, char **env)
 {
-	ft_builtins(*list, &env_list, env);
-	// while(env_list)
-	// {
-	// 	printf("%s=%s\n", env_list->key, env_list->value);
-	// 	env_list = env_list->next;
-	// }
+    int i;
+    int fd[2];
+    pid_t pid;
+    int prev_pipe = -1;
+
+    i = 0;
+    if((*list)->nbr == 1)
+    {
+        ft_builtins(*list, &env_list, env);
+        return;
+    }
+    while (i < (*list)->nbr)
+    {
+        if (pipe(fd) == -1)
+            error();
+        pid = fork();
+        if (pid == -1)
+            error();
+        if (pid == 0)
+	{
+            if (i != 0)
+	    {
+                dup2(prev_pipe, STDIN_FILENO);
+                close(prev_pipe);
+            }
+            if (i != (*list)->nbr - 1)
+                dup2(fd[1], STDOUT_FILENO);
+            close(fd[0]);
+        //     ft_builtins(list[i], &env_list, env);
+	    handle_cmd(list[i], env);
+            exit(EXIT_SUCCESS);
+        }
+	else
+	{
+            if (i != 0)
+                close(prev_pipe);
+            prev_pipe = fd[0];
+            close(fd[1]);
+        }
+        i++;
+    }
+    while(wait(NULL) > 0)
+    	;
+
 }

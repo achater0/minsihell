@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:29:29 by achater           #+#    #+#             */
-/*   Updated: 2024/05/03 15:45:26 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/05 16:28:21 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	execute(char *argv, char **envp)
 	if (execve(path, cmds, envp) < 0)
 		error();
 }
+
 char	*ft_strjoin(char *s1,char *s2)
 {
 	char *s3;
@@ -100,6 +101,7 @@ char	*ft_strjoin(char *s1,char *s2)
 	s3[i] = '\0';
 	return(s3);
 }
+
 char	*arg_to_str(char **args, char *cmd)
 {
 	char *arg;
@@ -120,16 +122,7 @@ char	*arg_to_str(char **args, char *cmd)
 
 void	handle_cmd(t_list *cmds,char **env)
 {
-	int	pid;
 	char *arg;
-
-	pid = fork();
-	if (pid == -1)
-		error();
-	if (pid == 0)
-	{
-		arg = arg_to_str(cmds->args,cmds->cmd);
-		execute(arg, env);
-	}
-	wait(NULL);
+	arg = arg_to_str(cmds->args,cmds->cmd);
+	execute(arg, env);
 }
