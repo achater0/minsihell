@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/12 16:33:38 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/12 16:52:16 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,89 +305,6 @@ void set_env(char **env, t_env **env_list)
 	}
 }
 
-// void execution(t_list **list, t_env *env_list, char **env)
-// {
-// 	int i;
-// 	int fd[2];
-// 	pid_t pid;
-// 	int prev_pipe = -1;
-
-// 	i = 0;
-// 	(*list)->file_in = 0;
-// 	(*list)->file_out = 1;
-// 	if ((*list)->nbr == 1)
-// 	{
-// 		if((*list)->redir[0] != NULL && (*list)->cmd == NULL)
-// 			handle_redir_no_command(*list);
-// 		else
-// 			handle_one_cmd(*list, &env_list, env);
-// 	}
-// 	else
-// 	{
-//         	while (i < (*list)->nbr)
-//         	{
-//             		if (pipe(fd) == -1)
-//             		    error();
-//           		pid = fork();
-//             		if (pid == -1)
-//             		    error();
-// 			handle_redir(list[i]);
-//             		if (pid == 0)
-// 	        	{
-// 				if (i == 0)
-// 					dup2(list[i]->file_in, 0);
-//                			if (i != 0)
-// 	                	{
-// 					if((*list)->file_in == 0)
-//               					dup2(prev_pipe, list[i]->file_in);
-// 					else
-// 						dup2(list[i]->file_in, 0);
-//                 			close(prev_pipe);
-//                 		}
-//                 		if (i != (*list)->nbr - 1)
-// 				{
-// 					if(list[i]->file_out == 1)
-//                 		        	dup2(fd[1], list[i]->file_out);
-// 					else
-// 						dup2(list[i]->file_out, 1);
-// 					close(fd[1]);
-// 				}
-// 				if(i == (*list)->nbr - 1)
-// 				{
-// 					if(list[i]->file_out == 1)
-// 						dup2(fd[1], list[i]->file_out);
-// 					else
-// 						dup2(list[i]->file_out, 1);
-// 				}
-// 				if(list[i]->redir[0] != NULL && list[i]->cmd == NULL)
-// 				{
-// 					handle_redir_no_command(*list);
-// 					exit(EXIT_SUCCESS);
-// 				}
-// 				else
-// 				{
-//                 			ft_builtins(list[i], &env_list, env);
-//                 			exit(EXIT_SUCCESS);
-// 				}
-//             		}
-// 	        	else
-// 	        	{
-//                 		if (i != 0)
-//                     			close(prev_pipe);
-//                 		prev_pipe = fd[0];
-//                 		close(fd[1]);
-//             		}
-// 			if(i != (*list)->nbr - 1)
-// 			{
-// 				list[i + 1]->file_in = 0;
-// 				list[i + 1]->file_out = 1;
-// 			}
-//             		i++;
-//         	}
-//        		while(wait(NULL) > 0)
-//     			;
-//     	}
-// }
 void execution(t_list **list, t_env *env_list, char **env)
 {
     int i;
@@ -418,6 +335,8 @@ void execution(t_list **list, t_env *env_list, char **env)
             handle_redir(list[i]);
             if (pid == 0)
             {
+		if(list[i]->file_in < 0)
+			exit(EXIT_FAILURE);
                 if (i == 0)
                     dup2(list[i]->file_in, STDIN_FILENO);
                 else

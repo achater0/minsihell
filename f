@@ -1,0 +1,16 @@
+Makefile
+a
+b
+execution
+f
+kk
+ls
+main.c
+minishell
+minishell.h
+parssing
+r
+test
+test2
+wc
+y
