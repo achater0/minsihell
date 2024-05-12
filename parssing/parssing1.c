@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:38:45 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/11 15:28:55 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/11 17:52:43 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void add_tab(char *line, char **tab, int len)
     if (!tab[i])
         exit(EXIT_FAILURE);
     ft_strncpy(tab[i], line, len);
-}
+} 
 
 
 char **handele_parssing(char *line)
@@ -64,7 +64,10 @@ t_list **parssing(char *line, t_env *env_list)
     if (ft_strlen(line) == 0)
         return NULL;
     if (check_line(line) == 1)
+    {
+        handele_error();
         return NULL;
+    }
     add_history(line);
     if (count_quote(line) == 1)
         return NULL;
@@ -75,7 +78,7 @@ t_list **parssing(char *line, t_env *env_list)
     if (!list)
         exit(EXIT_FAILURE);
     continue_parssing(list, tab, line, env_list);
-    remove_quotes(list);
+    remove_quotes(list, env_list);
     list[0]->exit = 0;
     print_tab(tab, line, list);
     return list;

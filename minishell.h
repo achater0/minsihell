@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/11 15:52:01 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/12 13:20:34 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ typedef struct s_check
 
 typedef struct s_list
 {
-    int file_in;
-    int file_out;
     int nbr;
     char *cmd;
     char **redir;
     int exit;
+    int check_export;
     char **args;
+    int file_in;
+    int file_out;
 }t_list;
 
 
@@ -66,6 +67,8 @@ typedef struct s_env
 	struct s_env *next;
 } t_env;
 
+
+//ex
 int ft_strcmp(char *arg, char *str);
 t_env    *ft_lstnew(char *key , char *content);
 t_env *ft_lstlast(t_env *lst);
@@ -85,22 +88,23 @@ void    error(void);
 void    execute(char **cmds, char **envp, char *cmd);
 void    change_value(t_env **env_list,char *value);
 char    *ft_strjoin(char *s1,char *s2);
-void	handle_redir(t_list *list);
-void	handle_redir_no_command(t_list *list);
+void    handle_redir(t_list *list);
+void    handle_redir_no_command(t_list *list);
+int	count_args0(char **args);
 
 /*******************************************************parssing*******************************************************/
-
+char *ft_substr(char const *s, unsigned int start, int len);
 //expend2
 char *ft_str_replace(const char *source, const char *pattern, const char *replacement);
 char *get_env_value(char *key, t_env *export_i);
 char *get_env_key(char *str, int i);
-char *remove_$(char *tab, int check);
-int expend_in_double_quote(char **tab, int i, int j, t_env *env_list);
+char *remove_$(char *tab, int check, char *value);
+char **expend_in_double_quote(char **tab, int i, int *j, t_env *env_list);
 
 //expend1
-int continue_expend(char **tab, int i, int j, t_env *env_list);
-void expend(char **tab, t_env *env_list);
-
+char **continue_expend(char **tab, int i, int *j, t_env *env_list);
+char **expend(char **tab, t_env *env_list);
+char **change_tab(char **old_tab, char *str);
 
 //helpers_function1
 char *ft_strstr(const char *haystack, const char *needle);
@@ -116,6 +120,7 @@ int	ft_isalnum(int c);
 size_t	ft_strlen(const char *str);
 char    *ft_strncpy(char *dest, const char *src, int len);
 char *ft_strcat(char *dest, char *src);
+int	ft_strncmp(const char *str1, const char *str2, size_t n);
 
 //syntax_errors
 void handele_error();
@@ -140,8 +145,8 @@ void add_tab(char *line, char **tab, int len);
 void handele_cmd(t_list **list, int *i, int *j, int *k);
 void handele_redir(t_list **list, int *i, int *j, int *k, int *l);
 void continue_handele_args(t_list **list, int *i, int *j, int *k, int *l);
-void handele_args(t_list **list, int *i, int *j, int *k, int *l);
-void remove_quotes(t_list** list);
+void handele_args(t_list **list, int *i, int *j, int *k, int *l, t_env *env_list);
+void remove_quotes(t_list** list, t_env *env_list);
 
 //handele_line
 void continue_handele_word(char *line, int *i);

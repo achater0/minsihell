@@ -6,11 +6,12 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:27:26 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/09 12:38:37 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:11:53 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 char *ft_strstr(const char *haystack, const char *needle)
 {
@@ -24,10 +25,17 @@ char *ft_strstr(const char *haystack, const char *needle)
     {
         h = haystack;
         n = needle;
-        while (h && n && *h == *n && *n != '\0')
+        if (*haystack == '$')
         {
-            h++;
-            n++;
+
+            haystack++;
+            h = haystack;
+            n = needle;
+            while (h && n && *h == *n && *n != '\0')
+            {
+                h++;
+                n++;
+            }
         }
         if (*n == '\0')
             return (char *)haystack;

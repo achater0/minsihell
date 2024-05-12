@@ -1,0 +1,9 @@
+Makefile
+execution
+main.c
+main.o
+minishell
+minishell.h
+parssing
+test
+test2

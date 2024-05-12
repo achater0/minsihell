@@ -6,7 +6,7 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:05:44 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/09 12:39:44 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:08:06 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void args(t_list **list, char **tab, int k, int ii)
     count = count_args(tab , ii);
     if (count == 0)
         return;
-        
     if (!list[k]->cmd)
         count--;
     if (count == 0)
@@ -74,7 +73,7 @@ void args(t_list **list, char **tab, int k, int ii)
     i = 0;
     while (i < count)
     {
-        while (tab[ii] && is_character2(tab[ii][0]) == 0)
+        while (tab[ii] && tab[ii][0] && is_character2(tab[ii][0]) == 0)
         {
             if (tab[ii] && (tab[ii][0] == '<' || tab[ii][0] == '>'))
                 ii += 2;
@@ -144,8 +143,7 @@ void redirection(t_list **list, char **tab, int pipe, int k)
         else if (tab[i] && is_character2(tab[i][0]) == 1 && list[k]->cmd == NULL)
         {
             list[k]->cmd = malloc(ft_strlen(tab[i]) + 1);
-            if (!list[k]->cmd)
-                exit(EXIT_FAILURE);
+            (!list[k]->cmd) ? exit(EXIT_FAILURE) : 0;
             ft_strncpy(list[k]->cmd, tab[i], ft_strlen(tab[i]));
             i++;
         }
@@ -156,7 +154,7 @@ void redirection(t_list **list, char **tab, int pipe, int k)
 
 void continue_parssing(t_list **list, char **tab, char *line, t_env *env_list)
 {
-    expend(tab, env_list);
+    tab = expend(tab, env_list);
     // (void)env_list;
     int count = count_cmds(line);
     int size = count_pipe(tab, count);
@@ -180,6 +178,7 @@ void continue_parssing(t_list **list, char **tab, char *line, t_env *env_list)
         list[k]->cmd = NULL;
         list[k]->redir = NULL;
         list[k]->args = NULL;
+        list[k]->check_export = 0;
         if (tab && tab[pipe] && tab[pipe][0] && tab[pipe][0] != '>' && tab[pipe][0] != '<')
         {
             list[k]->cmd = malloc(ft_strlen(tab[pipe]) + 1);
