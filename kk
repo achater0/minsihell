@@ -1,9 +1,0 @@
-Makefile
-execution
-kk
-main.c
-minishell
-minishell.h
-parssing
-test
-test2

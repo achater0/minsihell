@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/12 16:52:16 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/13 14:04:55 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ int check_builtins(char *cmd)
 		return (1);
 	if (ft_strcmp(cmd, "export") == 0)
 		return (1);
-	if (ft_strcmp(cmd, "pwd") == 0)
+	if (ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "PWD") == 0)
 		return (1);
 	if (ft_strcmp(cmd, "unset") == 0)
 		return(1);
@@ -226,28 +226,32 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list,char **env)
 
 	(void)env;
 	new_env = struct_to_char(*env_list);
+	handle_redir(cmds);
+	if (cmds->file_in < 0)
+		return;
+	if (ft_strcmp(cmds->cmd, "cd") == 0)
+		ft_cd(cmds->args, env_list);
+	else if (ft_strcmp(cmds->cmd, "unset") == 0)
+			*env_list = ft_unset(env_list,cmds->args);
+	else if (ft_strcmp(cmds->cmd, "exit") == 0)
+		ft_exit(cmds->args, cmds);
+	else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args != NULL)
+		ft_export(cmds->args, env_list);
 	pid = fork();
 	if (pid == -1)
 		error();
 	if (pid == 0)
 	{
-		handle_redir(cmds);
 		dup2(cmds->file_in, STDIN_FILENO);
 		dup2(cmds->file_out, STDOUT_FILENO);
 		if (ft_strcmp(cmds->cmd, "echo") == 0)
 			ft_echo(cmds->args, 0, 0, 0);
-		else if (ft_strcmp(cmds->cmd, "cd") == 0)
-			ft_cd(cmds->args, env_list);
 		else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
 			ft_env(*env_list, cmds->args);
-		else if (ft_strcmp(cmds->cmd, "export") == 0)
+		else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args == NULL)
 			ft_export(cmds->args, env_list);
 		else if (ft_strcmp(cmds->cmd, "pwd") == 0 || ft_strcmp(cmds->cmd, "PWD") == 0)
 			ft_pwd();
-		else if (ft_strcmp(cmds->cmd, "unset") == 0)
-			*env_list = ft_unset(env_list,cmds->args);
-		else if (ft_strcmp(cmds->cmd, "exit") == 0)
-			ft_exit(cmds->args, cmds);
 		if(check_builtins(cmds->cmd) == 1)
 			exit(0);
 		else
