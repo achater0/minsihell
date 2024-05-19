@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 00:47:28 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/11 18:15:58 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:47:48 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void handele_cmd(t_list **list, int *i, int *j, int *k)
         if (list[*i] && list[*i]->cmd)
             list[*i]->cmd[*k] = '\0';
 }
+
 void handele_redir(t_list **list, int *i, int *j, int *k, int *l)
 {
     while (list && list[*i] && list[*i]->redir && list[*i]->redir[*j])
@@ -163,7 +164,7 @@ void handele_args(t_list **list, int *i, int *j, int *k, int *l, t_env *env_list
     while (list && list[*i] && list[*i]->args && list[*i]->args[*j])
     {
         *l = 0;
-        *k = 0;                                                                                                                                                                                                                      
+        *k = 0;
         while (list && list[*i] && list[*i]->args && list[*i]->args[*j] && list[*i]->args[*j][*l])
         {
             if (list && list[*i] && list[*i]->args && list[*i]->args[*j] && list[*i]->args[*j][*l] && list[*i]->args[*j][*l] == '\"')
@@ -225,7 +226,7 @@ void handele_args(t_list **list, int *i, int *j, int *k, int *l, t_env *env_list
                 // }
                 // else
                     (*l)++;
-        
+
                 while (list && list[*i] && list[*i]->args && list[*i]->args[*j][*l] && list[*i]->args[*j][*l] != '\'')
                 {
                     list[*i]->args[*j][*k] = list[*i]->args[*j][*l];
@@ -238,7 +239,7 @@ void handele_args(t_list **list, int *i, int *j, int *k, int *l, t_env *env_list
             else if (list && list[*i] && list[*i]->args && list[*i]->args[*j] && list[*i]->args[*j][*l] && list[*i]->args[*j][*l] != '\"' && list[*i]->args[*j][*l] != '\'')
             {
                 list[*i]->args[*j][*k] = list[*i]->args[*j][*l];
-    
+
                 (*k)++;
                 (*l)++;
             }

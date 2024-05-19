@@ -6,7 +6,7 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:38:45 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/11 17:52:43 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/05/12 18:47:30 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void add_tab(char *line, char **tab, int len)
 char **handele_parssing(char *line)
 {
     int count = count_cmds(line);
-    // printf("*-------------------------*\n");
-    // printf("|   nbr of cmds -> [%d]    |\n", count);
-    // printf("*-------------------------*\n");
+    printf("*-------------------------*\n");
+    printf("|   nbr of cmds -> [%d]    |\n", count);
+    printf("*-------------------------*\n");
     // return NULL;
     // exit(EXIT_FAILURE);
     t_check check;
@@ -54,6 +54,18 @@ char **handele_parssing(char *line)
     return tab;
 }
 
+void signal_handler(int sig)
+{
+    
+    if (sig == SIGINT)
+    {
+        printf("\n");
+        rl_on_new_line();
+        rl_replace_line("", 1);
+        rl_redisplay();
+    }
+}
+
 t_list **parssing(char *line, t_env *env_list)
 {
     char **tab;
@@ -68,13 +80,12 @@ t_list **parssing(char *line, t_env *env_list)
         handele_error();
         return NULL;
     }
-    add_history(line);
     if (count_quote(line) == 1)
         return NULL;
     tab = handele_parssing(line);
     if (check_error(tab) == 1)
         return NULL;
-    list = (t_list **)malloc(sizeof(t_list *) * (count_pipe(tab, count_cmds(line)) + 1) + 1);
+    list = (t_list **)malloc(sizeof(t_list *) * (count_pipe(tab) + 1) + 1);
     if (!list)
         exit(EXIT_FAILURE);
     continue_parssing(list, tab, line, env_list);

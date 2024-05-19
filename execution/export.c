@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/05/11 20:45:34 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/17 12:48:24 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	sort_and_print_env(t_env *lst, int (*cmp)(char*,char*))
 	t_env	*tmp;
 
 	tmp = lst;
+	if(lst == NULL)
+		return;
 	while(lst->next != NULL)
 	{
 		if (((*cmp)(lst->key, lst->next->key)) > 0)
@@ -130,6 +132,12 @@ void	ft_export(char **args, t_env **env)
 	{
 		while (args[i])
 		{
+			if(args[i][0] == '\0')
+			{
+				printf("minishell: export: `': not a valid identifier\n");
+				i++;
+				continue;
+			}
 			split_by_equal(args[i], &key, &value);
 			if (key == NULL)
 			{
