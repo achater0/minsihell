@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/05/18 18:31:28 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/21 16:53:13 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,8 @@ void	handle_redir(t_list *list, t_here_doc **here_doc)
 {
 	int i;
 	int j;
-	int fd_in;
-	int fd_out;
 	int fd[2];
 
-	fd_in = list->file_in;
-	fd_out = list->file_out;
 	i = 0;
 	if (list->redir == NULL)
 		return;
@@ -76,8 +72,7 @@ void	handle_redir(t_list *list, t_here_doc **here_doc)
 			list->file_out = open(list->redir[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (list->file_out < 0)
 			{
-				if (fd_out != list->file_out)
-					printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
+				printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
 				return ;
 			}
 		}
@@ -86,8 +81,7 @@ void	handle_redir(t_list *list, t_here_doc **here_doc)
 			list->file_out = open(list->redir[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (list->file_out < 0)
 			{
-				if (fd_out != list->file_out)
-					printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
+				printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
 				return ;
 			}
 		}
@@ -96,8 +90,7 @@ void	handle_redir(t_list *list, t_here_doc **here_doc)
 			list->file_in = open(list->redir[i + 1], O_RDONLY);
 			if (list->file_in < 0)
 			{
-				if (fd_in != list->file_in)
-					printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
+				printf("minishell: %s: No such file or directory\n", list->redir[i + 1]);
 				return ;
 			}
 		}

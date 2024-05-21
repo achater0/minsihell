@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/18 18:23:32 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/21 16:55:46 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,6 @@ void	ft_unset(t_env **env_list, char **args)
 		ft_remove(env_list, args[i]);
 		i++;
 	}
-	// ft_env(*env_list, NULL);
 }
 
 char	**struct_to_char(t_env *env_list)

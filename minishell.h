@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/18 17:28:43 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/21 12:20:17 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void    handle_redir(t_list *list, t_here_doc **here_doc);
 void    handle_redir_no_command(t_list *list);
 char *shlvl_increment(char *str);
 void	set_here_doc(t_list **list, t_here_doc **here_doc);
+void	ft_env(t_env *env_list, char **args);
 
 
 /*******************************************************parssing*******************************************************/
