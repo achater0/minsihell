@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/21 16:55:46 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/21 17:08:35 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,9 +354,9 @@ void execution(t_list **list, t_env **env_list, char **env)
             pid = fork();
             if (pid == -1)
                 error();
-            handle_redir(list[i], &her_doc);
             if (pid == 0)
             {
+		handle_redir(list[i], &her_doc);
 		if(list[i]->file_in < 0)
 			exit(EXIT_FAILURE);
                 if (i == 0)
