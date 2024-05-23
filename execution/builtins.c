@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/21 17:08:35 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/23 21:30:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_cd(char	**args, t_env *env_list)
 
 	oldpwd = getcwd(NULL, 0);
 	if (args == NULL )
-		chdir(getenv("HOME"));
+		return;
 	else if (chdir(args[0]) == -1)
 		printf("minishell: cd: %s: No such file or directory\n", args[0]);
 	newpwd = getcwd(NULL, 0);
@@ -237,6 +237,8 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list,char **env, t_here_doc **here
 	handle_redir(cmds, here_doc);
 	if (cmds->file_in < 0)
 		return;
+	if (cmds->file_out < 0)
+		return;
 	if (ft_strcmp(cmds->cmd, "cd") == 0)
 		ft_cd(cmds->args, *env_list);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
@@ -358,6 +360,8 @@ void execution(t_list **list, t_env **env_list, char **env)
             {
 		handle_redir(list[i], &her_doc);
 		if(list[i]->file_in < 0)
+			exit(EXIT_FAILURE);
+		if(list[i]->file_out < 0)
 			exit(EXIT_FAILURE);
                 if (i == 0)
                     dup2(list[i]->file_in, STDIN_FILENO);
