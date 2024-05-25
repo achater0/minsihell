@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/23 21:30:19 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/25 14:57:01 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void ft_cd(char	**args, t_env *env_list)
 	char *newpwd;
 
 	oldpwd = getcwd(NULL, 0);
-	if (args == NULL )
-		return;
+	if (args == NULL)
+		write(2, "no path given\n", 14);
 	else if (chdir(args[0]) == -1)
 		printf("minishell: cd: %s: No such file or directory\n", args[0]);
 	newpwd = getcwd(NULL, 0);
@@ -315,7 +315,7 @@ void set_env(char **env, t_env **env_list)
 		splited_env = ft_split(env[i], '=');
 		if(ft_strcmp(splited_env[0],"SHLVL") == 0)
 			splited_env[1] = shlvl_increment(splited_env[1]);
-		else if(ft_strcmp(splited_env[0],"OLDPWD") == 0)
+		if(ft_strcmp(splited_env[0],"OLDPWD") == 0)
 			ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));
 		else if(ft_strcmp(splited_env[0], "_") == 0)
 			ft_lstadd_back(env_list, ft_lstnew("_", "/usr/bin/env"));
