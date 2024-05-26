@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/21 12:20:17 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/26 14:08:51 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ typedef struct s_check
     int in_s_cote;
 }t_check;
 
-typedef struct s_here_doc
-{
-    char **lines;
-    struct s_here_doc *next;
-}t_here_doc;
-
 typedef struct s_list
 {
     int nbr;
@@ -61,6 +55,7 @@ typedef struct s_list
     char **args;
     int file_in;
     int file_out;
+    int here_doc;
 }t_list;
 
 
@@ -94,10 +89,10 @@ void    error(void);
 void    execute(char **cmds, char **envp, char *cmd);
 void    change_value(t_env **env_list,char *value);
 char    *ft_strjoin(char *s1,char *s2);
-void    handle_redir(t_list *list, t_here_doc **here_doc);
+void    handle_redir(t_list *list);
 void    handle_redir_no_command(t_list *list);
 char *shlvl_increment(char *str);
-void	set_here_doc(t_list **list, t_here_doc **here_doc);
+void	set_here_doc(t_list **list);
 void	ft_env(t_env *env_list, char **args);
 
 
