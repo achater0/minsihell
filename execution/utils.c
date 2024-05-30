@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:31:52 by achater           #+#    #+#             */
-/*   Updated: 2024/05/15 15:01:09 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/30 14:41:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,4 +224,19 @@ char *shlvl_increment(char *str)
 		return(ft_strdup(""));
 	}
 	return (ft_itoa(i));
+}
+int ft_is_number(char *str)
+{
+	int i;
+
+	i = 0;
+	if(!str)
+		return (0);
+	while(str[i])
+	{
+		if(str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return(1);
 }

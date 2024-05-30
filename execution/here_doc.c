@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:49:08 by achater           #+#    #+#             */
-/*   Updated: 2024/05/26 15:57:53 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/30 14:25:52 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void	set_here_doc(t_list **list)
 {
-	int i = 0;
-	int j = 0;
+	int i;
+	int j;
 	int fd[2];
 	char *line;
 
+	i = 0;
 	while(i < (*list)->nbr)
 	{
 		j = 0;

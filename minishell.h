@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/26 14:08:51 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/30 14:48:18 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void    handle_redir_no_command(t_list *list);
 char *shlvl_increment(char *str);
 void	set_here_doc(t_list **list);
 void	ft_env(t_env *env_list, char **args);
+int ft_is_number(char *str);
+int	ft_atoi(const char *str);
 
 
 /*******************************************************parssing*******************************************************/

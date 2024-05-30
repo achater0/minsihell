@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/26 15:59:32 by achater          ###   ########.fr       */
+/*   Updated: 2024/05/30 14:47:39 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,30 @@ void	change_value(t_env **env_list,char *value)
 {
 	free((*env_list)->value);
 	(*env_list)->value = ft_strdup(value);
+}
+
+void	change_env_last_cmd(t_list *cmds, t_env **env_list)
+{
+	t_env *tmp;
+	char *last_cmd;
+	int i;
+
+	tmp = *env_list;
+	i = 0;
+	if (cmds->args == NULL)
+		last_cmd = cmds->cmd;
+	else
+	{
+		while(cmds->args[i])
+			i++;
+		last_cmd = cmds->args[i - 1];
+	}
+	while(tmp)
+	{
+		if(ft_strcmp(tmp->key, "_") == 0)
+			change_value(&tmp, last_cmd);
+		tmp = tmp->next;
+	}
 }
 
 void ft_cd(char	**args, t_env *env_list)
@@ -104,18 +128,54 @@ void	ft_env(t_env *env_list, char **args)
 
 void	ft_exit(char **args, t_list *cmds)
 {
+	unsigned char i ;
+	int x;
+
+	x = 0;
+	i = 0;
 	if(cmds->nbr == 1)
 		printf("exit\n");
-	if(args && args[0])
-		printf("minishell: exit: %s: numeric argument required\n", args[0]);
-	exit(0);
+	while (args && args[x])
+		x++;
+	if (args && x > 1 && ft_is_number(args[0]) == 1)
+	{
+		printf("minishell: exit: too many arguments\n");
+		return;
+	}
+	if (args && x == 1 && ft_is_number(args[0]) == 1)
+		i = ft_atoi(args[0]);
+	if (args)
+	{
+		if (ft_is_number(args[0]) == 0)
+		{
+			printf("minishell: exit: %s: numeric argument required\n", args[0]);
+			exit(255);
+		}
+	}
+	exit(i);
 }
-
-void	ft_pwd()
+char *ft_getcwd(t_env *env_list)
 {
 	char *pwd;
 
 	pwd = getcwd(NULL, 0);
+	if(pwd == NULL)
+	{
+		while(env_list)
+		{
+			if(ft_strcmp(env_list->key, "PWD") == 0)
+				return (env_list->value);
+			env_list = env_list->next;
+		}
+	}
+	return (pwd);
+}
+
+void	ft_pwd(t_env *env_list)
+{
+	char *pwd;
+
+	pwd = ft_getcwd(env_list);
 	if(pwd == NULL)
 	{
 		perror("getcwd");
@@ -261,7 +321,7 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list,char **env)
 		else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args == NULL)
 			ft_export(cmds->args, env_list);
 		else if (ft_strcmp(cmds->cmd, "pwd") == 0 || ft_strcmp(cmds->cmd, "PWD") == 0)
-			ft_pwd();
+			ft_pwd(*env_list);
 		if(check_builtins(cmds->cmd) == 1)
 			exit(0);
 		else
@@ -286,7 +346,7 @@ void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
 		ft_export(cmds->args, env_list);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0 || ft_strcmp(cmds->cmd, "PWD") == 0)
-		ft_pwd();
+		ft_pwd(*env_list);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
 		ft_unset(env_list,cmds->args);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
@@ -316,10 +376,7 @@ void set_env(char **env, t_env **env_list)
 		if(ft_strcmp(splited_env[0],"SHLVL") == 0)
 			splited_env[1] = shlvl_increment(splited_env[1]);
 		if(ft_strcmp(splited_env[0],"OLDPWD") == 0)
-			ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));
-		else if(ft_strcmp(splited_env[0], "_") == 0)
-			ft_lstadd_back(env_list, ft_lstnew("_", "/usr/bin/env"));
-		else
+			ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));		else
 			ft_lstadd_back(env_list, ft_lstnew(splited_env[0], splited_env[1]));
 		i++;
 	}
@@ -335,6 +392,7 @@ void execution(t_list **list, t_env **env_list, char **env)
     i = 0;
     (*list)->file_in = 0;
     (*list)->file_out = 1;
+    change_env_last_cmd(*list, env_list);
     set_here_doc(list);
     if ((*list)->nbr == 1)
     {
