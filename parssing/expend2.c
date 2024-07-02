@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 00:31:58 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/13 16:49:45 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/06/30 11:58:22 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char *ft_str_replace(const char *tab, const char *key, const char *value)
     size_t value_len;
     char *occurrence;
     size_t new_size;
-    
+
     if ( !tab || !key || !value)
         return ft_strdup(tab);
     key_len = ft_strlen(key);
@@ -66,13 +66,13 @@ char *get_env_value(char *key, t_env *export_i)
 
     if (!key)
         return NULL;
-    
+
     tmp = export_i;
     while (tmp)
     {
         if (!strcmp(tmp->key, key))
         {
-            value = strdup(tmp->value);
+            value = ft_strdup(tmp->value);
             // value = add_$(value);
             return (value);
         }
@@ -101,7 +101,7 @@ char *get_env_key(char *str, int i)
         key[i - key_start] = '\0';
     }
     return (key);
-} 
+}
 
 char *remove_$(char *tab, int check, char *value)
 {
@@ -167,7 +167,7 @@ char **expend_in_double_quote(char **tab, int i, int *j, t_env *env_list)
                 // tab = change_tab(tab, tab[i]);
                 if (ft_strcmp(tab[0], "export") == 0)
                     tab = change_tab(tab, tab[i] + *j);
-                else    
+                else
                     tab = change_tab(tab, tab[i]);
                 return tab;
             }

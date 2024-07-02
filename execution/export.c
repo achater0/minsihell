@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/05/21 12:29:10 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/02 11:25:14 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,22 @@ void	split_by_equal(char *str, char **key, char **value)
 	(*value)[j] = '\0';
 }
 
+void	free_list(t_env **env)
+{
+	t_env *tmp;
+	t_env *tmp1;
+
+	tmp = *env;
+	while (tmp)
+	{
+		tmp1 = tmp->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+		tmp = tmp1;
+	}
+	*env = NULL;
+}
 
 void	ft_export(char **args, t_env **env)
 {
@@ -126,6 +142,7 @@ void	ft_export(char **args, t_env **env)
 	if (args == NULL)
 	{
 		sort_and_print_env(tmp, ft_strcmp);
+		// free_list(&tmp);
 		return;
 	}
 	else
@@ -143,12 +160,16 @@ void	ft_export(char **args, t_env **env)
 			{
 				printf("minishell: export: `=': not a valid identifier\n");
 				i++;
+				// free(key);
+				// free(value);
 				continue;
 			}
 			if (check_args(key, "export") == 1 || (key[ft_strlen(key) - 1] == '+' && value == NULL))
 			{
 				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
 				i++;
+				// free(key);
+				// free(value);
 				continue;
 			}
 			else
@@ -162,6 +183,8 @@ void	ft_export(char **args, t_env **env)
 						if (value == NULL)
 						{
 							i++;
+							// free(key);
+							// free(value);
 							continue;
 						}
 						else
@@ -197,6 +220,8 @@ void	ft_export(char **args, t_env **env)
 
 			}
 			i++;
+			// free(key);
+			// free(value);
 		}
 	}
 }

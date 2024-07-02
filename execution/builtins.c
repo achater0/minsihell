@@ -6,249 +6,17 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/05/30 14:47:39 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/02 13:23:57 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	change_value(t_env **env_list,char *value)
-{
-	free((*env_list)->value);
-	(*env_list)->value = ft_strdup(value);
-}
-
-void	change_env_last_cmd(t_list *cmds, t_env **env_list)
-{
-	t_env *tmp;
-	char *last_cmd;
-	int i;
-
-	tmp = *env_list;
-	i = 0;
-	if (cmds->args == NULL)
-		last_cmd = cmds->cmd;
-	else
-	{
-		while(cmds->args[i])
-			i++;
-		last_cmd = cmds->args[i - 1];
-	}
-	while(tmp)
-	{
-		if(ft_strcmp(tmp->key, "_") == 0)
-			change_value(&tmp, last_cmd);
-		tmp = tmp->next;
-	}
-}
-
-void ft_cd(char	**args, t_env *env_list)
-{
-	char *oldpwd;
-	char *newpwd;
-
-	oldpwd = getcwd(NULL, 0);
-	if (args == NULL)
-		write(2, "no path given\n", 14);
-	else if (chdir(args[0]) == -1)
-		printf("minishell: cd: %s: No such file or directory\n", args[0]);
-	newpwd = getcwd(NULL, 0);
-	while(env_list->next)
-	{
-		if(ft_strcmp(env_list->key, "OLDPWD") == 0)
-			change_value(&env_list, oldpwd);
-		else if(ft_strcmp(env_list->key, "PWD") == 0)
-			change_value(&env_list, newpwd);
-		env_list = env_list->next;
-	}
-	return;
-}
-
-int cmp(char *s1)
-{
-	int i = 0;
-
-	if(s1[i] == '-' && s1[i + 1] == 'n')
-	{
-		i++;
-		while(s1[i])
-		{
-			if(s1[i] != 'n')
-				return (1);
-			i++;
-		}
-		return (0);
-	}
-	return (1);
-}
-void	ft_echo(char **args, int n, int j, int x)
-{
-	if (args == NULL)
-	{
-		printf("\n");
-		return;
-	}
-	if (cmp(args[0]) == 0)
-	{
-		j++;
-		n = 1;
-		x = 1;
-	}
-	while (args[j])
-	{
-		if (cmp(args[j]) == 0 && n == 1)
-		{
-			j++;
-			continue ;
-		}
-		if (cmp(args[j]) != 0 )
-			n = 0;
-		printf("%s", args[j]);
-		if (args[j + 1])
-			printf(" ");
-		j++;
-	}
-	if (x == 0)
-		printf("\n");
-}
-void	ft_env(t_env *env_list, char **args)
-{
-	if(args && args[0])
-	{
-		printf("env: %s: No such file or directory\n", args[0]);
-		return;
-	}
-	while (env_list)
-	{
-		if(env_list->value != NULL)
-			printf("%s=%s\n", env_list->key, env_list->value);
-		env_list = env_list->next;
-	}
-}
-
-void	ft_exit(char **args, t_list *cmds)
-{
-	unsigned char i ;
-	int x;
-
-	x = 0;
-	i = 0;
-	if(cmds->nbr == 1)
-		printf("exit\n");
-	while (args && args[x])
-		x++;
-	if (args && x > 1 && ft_is_number(args[0]) == 1)
-	{
-		printf("minishell: exit: too many arguments\n");
-		return;
-	}
-	if (args && x == 1 && ft_is_number(args[0]) == 1)
-		i = ft_atoi(args[0]);
-	if (args)
-	{
-		if (ft_is_number(args[0]) == 0)
-		{
-			printf("minishell: exit: %s: numeric argument required\n", args[0]);
-			exit(255);
-		}
-	}
-	exit(i);
-}
-char *ft_getcwd(t_env *env_list)
-{
-	char *pwd;
-
-	pwd = getcwd(NULL, 0);
-	if(pwd == NULL)
-	{
-		while(env_list)
-		{
-			if(ft_strcmp(env_list->key, "PWD") == 0)
-				return (env_list->value);
-			env_list = env_list->next;
-		}
-	}
-	return (pwd);
-}
-
-void	ft_pwd(t_env *env_list)
-{
-	char *pwd;
-
-	pwd = ft_getcwd(env_list);
-	if(pwd == NULL)
-	{
-		perror("getcwd");
-		return;
-	}
-	printf("%s\n", pwd);
-}
-
-
-void	ft_remove(t_env **env_list, char *key)
-{
-	t_env *temp = *env_list;
-	t_env *prev = NULL;
-
-	while(env_list && temp->next != NULL)
-	{
-		if (check_args(key, "unset") == 1)
-		{
-			printf("minishell: unset: `%s': not a valid identifier\n", key);
-			return;
-		}
-		if (ft_strcmp(temp->key, key) != 0)
-		{
-			prev = temp;
-			temp = temp->next;
-		}
-		if (prev == NULL && ft_strcmp(temp->key, key) == 0)
-		{
-			*env_list = temp->next;
-			free(temp);
-			return;
-		}
-		else if (ft_strcmp(temp->key, key) == 0)
-		{
-			prev->next = temp->next;
-			free(temp);
-			return;
-		}
-		if(temp->next == NULL && ft_strcmp(temp->key, key) == 0)
-		{
-			prev->next = NULL;
-			free(temp);
-			return;
-		}
-	}
-	return;
-}
-
-void	ft_unset(t_env **env_list, char **args)
-{
-	int i = 0;
-
-	if (args == NULL)
-		return ;
-	if(env_list == NULL)
-		return ;
-	while (args[i])
-	{
-		if(ft_strcmp(args[i], "_") == 0)
-		{
-			i++;
-			continue;
-		}
-		ft_remove(env_list, args[i]);
-		i++;
-	}
-}
-
 char	**struct_to_char(t_env *env_list)
 {
-	int i;
-	char **new_env;
-	t_env *temp;
+	int	i;
+	char	**new_env;
+	t_env	*temp;
 
 	i = 0;
 	temp = env_list;
@@ -257,7 +25,7 @@ char	**struct_to_char(t_env *env_list)
 		return (NULL);
 	while (temp)
 	{
-		if(temp->value == NULL)
+		if (temp->value == NULL)
 			new_env[i] = ft_strjoin3(temp->key, "", "");
 		else
 			new_env[i] = ft_strjoin3(temp->key, "=", temp->value);
@@ -267,7 +35,8 @@ char	**struct_to_char(t_env *env_list)
 	new_env[i] = NULL;
 	return (new_env);
 }
-int check_builtins(char *cmd)
+
+int	check_builtins(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
@@ -286,32 +55,8 @@ int check_builtins(char *cmd)
 	return (0);
 }
 
-
-void	handle_one_cmd(t_list *cmds, t_env **env_list,char **env)
+void	child_help(t_list *cmds, t_env **env_list, char **new_env)
 {
-	int pid;
-	char **new_env;
-
-	(void)env;
-	new_env = struct_to_char(*env_list);
-	handle_redir(cmds);
-	if (cmds->file_in < 0)
-		return;
-	if (cmds->file_out < 0)
-		return;
-	if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds->args, *env_list);
-	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-		ft_unset(env_list,cmds->args);
-	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		ft_exit(cmds->args, cmds);
-	else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args != NULL)
-		ft_export(cmds->args, env_list);
-	pid = fork();
-	if (pid == -1)
-		error();
-	if (pid == 0)
-	{
 		dup2(cmds->file_in, STDIN_FILENO);
 		dup2(cmds->file_out, STDOUT_FILENO);
 		if (ft_strcmp(cmds->cmd, "echo") == 0)
@@ -326,9 +71,35 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list,char **env)
 			exit(0);
 		else
 			handle_cmd(cmds, new_env);
-	}
+}
+
+void	handle_one_cmd(t_list *cmds, t_env **env_list)
+{
+	int	pid;
+	char	**new_env;
+
+	new_env = struct_to_char(*env_list);
+	handle_redir(cmds, 0);
+	if (cmds->file_in < 0)
+		return ;
+	if (cmds->file_out < 0)
+		return ;
+	if (ft_strcmp(cmds->cmd, "cd") == 0)
+		ft_cd(cmds->args, *env_list);
+	else if (ft_strcmp(cmds->cmd, "unset") == 0)
+		ft_unset(env_list,cmds->args);
+	else if (ft_strcmp(cmds->cmd, "exit") == 0)
+		ft_exit(cmds->args, cmds);
+	else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args != NULL)
+		ft_export(cmds->args, env_list);
+	pid = fork();
+	if (pid == -1)
+		error();
+	if (pid == 0)
+		child_help(cmds, env_list, new_env);
 	else
 		wait(NULL);
+	free(new_env);
 }
 
 void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
@@ -353,16 +124,29 @@ void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
 		ft_exit(cmds->args, cmds);
 	else
 		handle_cmd(cmds, new_env);
+	free(new_env);
+}
+void	ft_free(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
 
-void set_env(char **env, t_env **env_list)
+void set_env(char **env, t_env **env_list, int i)
 {
-	int i = 0;
-	char **splited_env = NULL;
-	char *pdw = NULL;
+	char	**splited_env;
+	char	*pdw;
 
 	pdw = getcwd(NULL, 0);
-	if(env[0] == NULL)
+	splited_env = NULL;
+	if (env[0] == NULL)
 	{
 		ft_lstadd_back(env_list, ft_lstnew("PWD", pdw));
 		ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));
@@ -373,35 +157,37 @@ void set_env(char **env, t_env **env_list)
 	while(env[i])
 	{
 		splited_env = ft_split(env[i], '=');
-		if(ft_strcmp(splited_env[0],"SHLVL") == 0)
+		if (ft_strcmp(splited_env[0],"SHLVL") == 0)
 			splited_env[1] = shlvl_increment(splited_env[1]);
-		if(ft_strcmp(splited_env[0],"OLDPWD") == 0)
-			ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));		else
+		if (ft_strcmp(splited_env[0],"OLDPWD") == 0)
+			ft_lstadd_back(env_list, ft_lstnew("OLDPWD", NULL));
+		else
 			ft_lstadd_back(env_list, ft_lstnew(splited_env[0], splited_env[1]));
+		// ft_free(splited_env);
 		i++;
 	}
 }
 
-void execution(t_list **list, t_env **env_list, char **env)
+void	execution(t_list **list, t_env **env_list, char **env)
 {
-    int i;
-    int fd[2];
-    pid_t pid;
+    int	i;
+    int	fd[2];
+    pid_t *pid = malloc(sizeof(pid_t) * (*list)->nbr);
     int prev_pipe = -1;
 
     i = 0;
     (*list)->file_in = 0;
     (*list)->file_out = 1;
     change_env_last_cmd(*list, env_list);
-    set_here_doc(list);
+    set_here_doc(list, -1, 0);
     if ((*list)->nbr == 1)
     {
 	if((*list)->cmd == NULL && (*list)->redir[0] == NULL)
-		return;
+		return ;
         if ((*list)->redir[0] != NULL && (*list)->cmd == NULL)
-		handle_redir_no_command(*list);
+		handle_redir_no_command(*list, 0);
 	else
-            handle_one_cmd(*list, env_list, env);
+            handle_one_cmd(*list, env_list);
     }
     else
     {
@@ -410,15 +196,15 @@ void execution(t_list **list, t_env **env_list, char **env)
 
         	if (pipe(fd) == -1)
         		error();
-        	pid = fork();
-        	if (pid == -1)
+        	pid[i] = fork();
+        	if (pid[i] == -1)
         		error();
-        	if (pid == 0)
+        	if (pid[i] == 0)
             	{
-			handle_redir(list[i]);
-			if(list[i]->file_in < 0)
+			handle_redir(list[i], 0);
+			if (list[i]->file_in < 0)
 				exit(EXIT_FAILURE);
-			if(list[i]->file_out < 0)
+			if (list[i]->file_out < 0)
 				exit(EXIT_FAILURE);
                 	if (i == 0)
                			dup2(list[i]->file_in, STDIN_FILENO);
@@ -433,7 +219,7 @@ void execution(t_list **list, t_env **env_list, char **env)
 
                 	if (i != (*list)->nbr - 1)
                 	{
-				if(list[i]->file_out == 1)
+				if (list[i]->file_out == 1)
 				{
 					close(fd[0]);
 		    			dup2(fd[1], STDOUT_FILENO);
@@ -449,7 +235,7 @@ void execution(t_list **list, t_env **env_list, char **env)
 			}
                 	if (list[i]->redir[0] != NULL && list[i]->cmd == NULL)
                 	{
-                	    handle_redir_no_command(*list);
+                	    handle_redir_no_command(*list, 0);
                 	    exit(EXIT_SUCCESS);
                 	}
                 	else
@@ -472,7 +258,10 @@ void execution(t_list **list, t_env **env_list, char **env)
         	}
         	i++;
         }
-        while (wait(NULL) > 0)
-            ;
+	int status;
+	i = -1;
+	while (++i < (*list)->nbr)
+		waitpid(pid[i], &status, 0);
+	printf("%d\n", WEXITSTATUS(status));
     }
 }

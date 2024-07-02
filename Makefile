@@ -3,10 +3,11 @@ SRCS =	main.c  ./parssing/parssing3.c ./parssing/remove_quotes.c ./parssing/hand
 		./parssing/expend2.c ./parssing/helpers_functions1.c \
 		./parssing/syntax_errors.c ./parssing/count_cmds.c ./parssing/parssing1.c \
 		./parssing/parssing2.c ./execution/builtins.c \
-		./execution/ft_lstadd_back_bonus.c ./execution/ft_lstlast_bonus.c \
-		./execution/ft_lstsize_bonus.c ./execution/ft_lstnew_bonus.c \
 		./execution/ft_split.c ./execution/utils.c  ./execution/export.c \
-		./execution/handle_cmd.c ./execution/handle_redir.c ./execution/here_doc.c
+		./execution/handle_cmd.c ./execution/handle_redir.c ./execution/here_doc.c \
+		./execution/echo.c ./execution/cd.c ./execution/env_exit_pwd.c \
+		./execution/lst_utils.c ./execution/utils2.c ./execution/utils3.c \
+		./execution/unset.c
 OBJS = ${SRCS:.c=.o}
 NAME = minishell
 CC = cc

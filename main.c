@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/05/30 14:14:40 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/02 11:05:30 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int arc, char **arv, char **env)
     line = NULL;
     list = NULL;
     env_list = NULL;
-    set_env(env, &env_list);
+    set_env(env, &env_list, 0);
     signal(SIGINT, signal_handler);
     signal(SIGQUIT, signal_handler);
     rl_catch_signals = 0;
@@ -39,6 +39,6 @@ int main(int arc, char **arv, char **env)
             execution(list, &env_list, env);
         }
         if (!line)
-            exit(1);
+            exit(0);
     }
 }
