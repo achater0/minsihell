@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:53:49 by achater           #+#    #+#             */
-/*   Updated: 2024/06/30 16:59:13 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/03 10:58:58 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_strjoin(char *s1,char *s2)
 	int i;
 	int j;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	s3 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if(s3 == NULL)
@@ -63,11 +63,8 @@ char	*ft_strjoin(char *s1,char *s2)
 		return(s2);
 	if(s2 == NULL)
 		return(s1);
-	while(s1[i])
-	{
+	while(s1[++i])
 		s3[i] = s1[i];
-		i++;
-	}
 	while(s2[j])
 	{
 		s3[i] = s2[j];
@@ -76,4 +73,20 @@ char	*ft_strjoin(char *s1,char *s2)
 	}
 	s3[i] = '\0';
 	return(s3);
+}
+
+void	error(void)
+{
+	perror("Error");
+	exit(EXIT_FAILURE);
+}
+
+int	count_args0(char **args)
+{
+	int i;
+
+	i = 0;
+	while(args[i])
+		i++;
+	return (i);
 }

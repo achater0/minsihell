@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/02 11:25:14 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/04 11:04:29 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,43 @@ t_env	*ft_copy_list(t_env *env_list)
 	}
 	return (new);
 }
+void	swap_nodes(t_env *node1, t_env *node2)
+{
+	char *swap_key ;
+	char *swap_value;
+
+	swap_value = node1->value;
+	swap_key = node1->key;
+	node1->key = node2->key;
+	node1->value = node2->value;
+	node2->key = swap_key;
+	node2->value = swap_value;
+}
 
 
 void	sort_and_print_env(t_env *lst, int (*cmp)(char*,char*))
 {
-	char	*swap;
-	char	*swap2;
 	t_env	*tmp;
 
 	tmp = lst;
-	if(lst == NULL)
+	if (lst == NULL)
 		return;
 	while(lst->next != NULL)
 	{
 		if (((*cmp)(lst->key, lst->next->key)) > 0)
 		{
-			swap = lst->key;
-			swap2 = lst->value;
-			lst->value = lst->next->value;
-			lst->key = lst->next->key;
-			lst->next->key = swap;
-			lst->next->value = swap2;
+			swap_nodes(lst, lst->next);
 			lst = tmp;
 		}
 		else
 			lst = lst->next;
 	}
 	lst = tmp;
-	while(lst)
+	while (lst)
 	{
-		if((*cmp)(lst->key, "_") != 0 && lst->value != NULL)
+		if ((*cmp)(lst->key, "_") != 0 && lst->value != NULL)
 			printf("declare -x %s=\"%s\"\n", lst->key, lst->value);
-		else if((*cmp)(lst->key, "_") != 0 && lst->value == NULL)
+		else if ((*cmp)(lst->key, "_") != 0 && lst->value == NULL)
 			printf("declare -x %s\n", lst->key);
 		lst = lst->next;
 	}
@@ -75,11 +80,15 @@ int	key_exist(t_env *env, char *key)
 	}
 	return (0);
 }
+
+
 void	split_by_equal(char *str, char **key, char **value)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	if (str[i] == '=')
 	{
 		(*key) = NULL;
@@ -89,27 +98,16 @@ void	split_by_equal(char *str, char **key, char **value)
 	while (str[i] && str[i] != '=')
 		i++;
 	(*key) = malloc(i + 1);
-	i = 0;
-	while (str[i] && str[i] != '=')
-	{
+	i = -1;
+	while (str[++i] && str[i] != '=')
 		(*key)[i] = str[i];
-		i++;
-	}
 	(*key)[i] = '\0';
-	if(str[i] == '\0')
+	if (str[i] == '\0')
 	{
 		(*value) = NULL;
 		return;
 	}
-	(*value) = malloc(ft_strlen(str) - i);
-	i++;
-	while (str[i])
-	{
-		(*value)[j] = str[i];
-		i++;
-		j++;
-	}
-	(*value)[j] = '\0';
+	(*value) = ft_strdup(str + i + 1);
 }
 
 void	free_list(t_env **env)
@@ -143,7 +141,7 @@ void	ft_export(char **args, t_env **env)
 	{
 		sort_and_print_env(tmp, ft_strcmp);
 		// free_list(&tmp);
-		return;
+		return ;
 	}
 	else
 	{
@@ -160,16 +158,13 @@ void	ft_export(char **args, t_env **env)
 			{
 				printf("minishell: export: `=': not a valid identifier\n");
 				i++;
-				// free(key);
-				// free(value);
 				continue;
 			}
 			if (check_args(key, "export") == 1 || (key[ft_strlen(key) - 1] == '+' && value == NULL))
 			{
 				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
 				i++;
-				// free(key);
-				// free(value);
+				free(key);
 				continue;
 			}
 			else
@@ -183,8 +178,7 @@ void	ft_export(char **args, t_env **env)
 						if (value == NULL)
 						{
 							i++;
-							// free(key);
-							// free(value);
+							free(key);
 							continue;
 						}
 						else
@@ -217,11 +211,8 @@ void	ft_export(char **args, t_env **env)
 							tmp1 = tmp1->next;
 						}
 				}
-
 			}
 			i++;
-			// free(key);
-			// free(value);
 		}
 	}
 }

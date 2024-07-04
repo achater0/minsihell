@@ -6,17 +6,11 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:29:29 by achater           #+#    #+#             */
-/*   Updated: 2024/06/30 16:58:04 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/03 11:01:11 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	error(void)
-{
-	perror("Error");
-	exit(EXIT_FAILURE);
-}
 
 
 char	*find_path(char *cmd, char **envp)
@@ -42,9 +36,7 @@ char	*find_path(char *cmd, char **envp)
 		free(path);
 	}
 	i = -1;
-	while (str[++i])
-		free(str[i]);
-	free(str);
+	ft_free(str);
 	if (x < 0)
 		return (NULL);
 	return (path);
@@ -89,17 +81,6 @@ void	execute(char **cmds, char **envp,char *cmd)
 		write(2, ": command not found\n", 20);
 		exit(127);
 	}
-}
-
-
-int	count_args0(char **args)
-{
-	int i;
-
-	i = 0;
-	while(args[i])
-		i++;
-	return (i);
 }
 
 char **cmds_whit_args(char *cmd, char **args)

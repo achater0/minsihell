@@ -7,7 +7,7 @@ SRCS =	main.c  ./parssing/parssing3.c ./parssing/remove_quotes.c ./parssing/hand
 		./execution/handle_cmd.c ./execution/handle_redir.c ./execution/here_doc.c \
 		./execution/echo.c ./execution/cd.c ./execution/env_exit_pwd.c \
 		./execution/lst_utils.c ./execution/utils2.c ./execution/utils3.c \
-		./execution/unset.c
+		./execution/unset.c ./execution/set_env.c ./execution/handl_one_cmd.c
 OBJS = ${SRCS:.c=.o}
 NAME = minishell
 CC = cc
