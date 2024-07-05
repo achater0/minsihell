@@ -6,12 +6,19 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/04 12:09:08 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/05 13:31:29 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	close_here_doc(t_list **list, int i)
+{
+	while (++i < (*list)->nbr)
+	{
+		close(list[i]->here_doc);
+	}
+}
 
 void	ft_builtins(t_list *cmds, t_env **env_list,char **env)
 {
@@ -115,12 +122,14 @@ void	execution(t_list **list, t_env **env_list, char **env)
 				close(list[i]->file_in);
 			if (list[i]->file_out != 1)
 				close(list[i]->file_out);
+			close(fd[0]);
+			close(fd[1]);
             	}
             	else
             	{
                 	close(prev_pipe);
+			close(fd[1]);
                 	prev_pipe = fd[0];
-                	close(fd[1]);
         	}
          	if (i != (*list)->nbr - 1)
         	{
@@ -129,10 +138,12 @@ void	execution(t_list **list, t_env **env_list, char **env)
         	}
         	i++;
         }
+	close(fd[0]);
 	int status;
 	i = -1;
 	while (++i < (*list)->nbr)
 		waitpid(pid[i], &status, 0);
 	printf("%d\n", WEXITSTATUS(status));
     }
+    close_here_doc(list, -1);
 }

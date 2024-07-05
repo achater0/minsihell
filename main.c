@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/03 11:44:05 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/05 11:49:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,5 @@ int main(int arc, char **arv, char **env)
         }
         if (!line)
             exit(0);
-        // if ((*list)->file_in != 0)
-        //     close((*list)->file_in);
-        // if ((*list)->file_out != 1)
-        //     close((*list)->file_out);
     }
 }

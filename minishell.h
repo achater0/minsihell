@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/04 10:33:58 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/05 13:30:21 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	ft_free(char **str);
 char	**struct_to_char(t_env *env_list);
 int	count_args0(char **args);
 void	handle_one_cmd(t_list *cmds, t_env **env_list);
+void	close_here_doc(t_list **list, int i);
 
 /*******************************************************parssing*******************************************************/
 char *ft_substr(char const *s, unsigned int start, int len);
