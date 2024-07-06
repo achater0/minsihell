@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/04 11:04:29 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/06 14:08:18 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,109 +110,112 @@ void	split_by_equal(char *str, char **key, char **value)
 	(*value) = ft_strdup(str + i + 1);
 }
 
-void	free_list(t_env **env)
-{
-	t_env *tmp;
-	t_env *tmp1;
+// void	free_list(t_env **env)
+// {
+// 	t_env *tmp;
+// 	t_env *tmp1;
 
-	tmp = *env;
-	while (tmp)
+// 	tmp = *env;
+// 	while (tmp)
+// 	{
+// 		tmp1 = tmp->next;
+// 		free(tmp->key);
+// 		free(tmp->value);
+// 		free(tmp);
+// 		tmp = tmp1;
+// 	}
+// 	*env = NULL;
+// }
+void	export_no_plus(char *key, char *value, t_env **env, t_env **tmp1)
+{
+	if (key_exist(*env, key) == 0)
+		ft_lstadd_back(env, ft_lstnew(key, value));
+	else
 	{
-		tmp1 = tmp->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-		tmp = tmp1;
+		if (value == NULL)
+			free(key);
+		else
+		{
+			while(tmp1)
+			{
+				if (ft_strcmp((*tmp1)->key, key) == 0)
+				{
+					(*tmp1)->value = value;
+					break;
+				}
+				*tmp1 = (*tmp1)->next;
+			}
+		}
 	}
-	*env = NULL;
+}
+
+void	export_helper(char *key, char *value, t_env **env, t_env **tmp1)
+{
+	if (key[ft_strlen(key) - 1] != '+')
+		export_no_plus(key, value, env, tmp1);
+	else
+	{
+		key[ft_strlen(key) - 1] = '\0';
+		if (key_exist(*env, key) == 0)
+			ft_lstadd_back(env, ft_lstnew(key, value));
+		else
+			while(tmp1)
+			{
+				if (ft_strcmp((*tmp1)->key, key) == 0)
+				{
+					(*tmp1)->value = ft_strjoin(get_env_value(key, *tmp1), value);
+					break;
+				}
+				*tmp1 = (*tmp1)->next;
+			}
+	}
+}
+void	last_char_is_plus(int *i, char **args, char *key)
+{
+	printf("minishell: export: `%s': not a valid identifier\n", args[*i]);
+	(*i)++;
+	free(key);
+}
+void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
+{
+	char	*key;
+	char	*value;
+
+	while (args[++i])
+	{
+		if (args[i][0] == '\0')
+		{
+			printf("minishell: export: `': not a valid identifier\n");
+			i++;
+			continue;
+		}
+		split_by_equal(args[i], &key, &value);
+		if (key == NULL)
+		{
+			printf("minishell: export: `=': not a valid identifier\n");
+			i++;
+			continue;
+		}
+		if (check_args(key, "export") == 1
+			|| (key[ft_strlen(key) - 1] == '+' && value == NULL))
+			last_char_is_plus(&i, args, key);
+		else
+			export_helper(key, value, env, tmp1);
+	}
 }
 
 void	ft_export(char **args, t_env **env)
 {
 	t_env *tmp;
 	t_env *tmp1;
-	int i = 0;
-	char *key;
-	char *value;
+	int i;
 
+	i = -1;
 	tmp = ft_copy_list(*env);
 	tmp1 = *env;
 	if (args == NULL)
-	{
 		sort_and_print_env(tmp, ft_strcmp);
-		// free_list(&tmp);
-		return ;
-	}
+		// free_list(&tmp)
 	else
-	{
-		while (args[i])
-		{
-			if(args[i][0] == '\0')
-			{
-				printf("minishell: export: `': not a valid identifier\n");
-				i++;
-				continue;
-			}
-			split_by_equal(args[i], &key, &value);
-			if (key == NULL)
-			{
-				printf("minishell: export: `=': not a valid identifier\n");
-				i++;
-				continue;
-			}
-			if (check_args(key, "export") == 1 || (key[ft_strlen(key) - 1] == '+' && value == NULL))
-			{
-				printf("minishell: export: `%s': not a valid identifier\n", args[i]);
-				i++;
-				free(key);
-				continue;
-			}
-			else
-			{
-				if (key[ft_strlen(key) - 1] != '+')
-				{
-					if (key_exist(*env, key) == 0)
-						ft_lstadd_back(env, ft_lstnew(key, value));
-					else
-					{
-						if (value == NULL)
-						{
-							i++;
-							free(key);
-							continue;
-						}
-						else
-						{
-							while(tmp1)
-							{
-								if (ft_strcmp(tmp1->key, key) == 0)
-								{
-									tmp1->value = value;
-									break;
-								}
-								tmp1 = tmp1->next;
-							}
-						}
-					}
-				}
-				else
-				{
-					key[ft_strlen(key) - 1] = '\0';
-					if (key_exist(*env, key) == 0)
-						ft_lstadd_back(env, ft_lstnew(key, value));
-					else
-						while(tmp1)
-						{
-							if (ft_strcmp(tmp1->key, key) == 0)
-							{
-								tmp1->value = ft_strjoin(get_env_value(key, tmp1), value);
-								break;
-							}
-							tmp1 = tmp1->next;
-						}
-				}
-			}
-			i++;
-		}
-	}
+		export_whith_args(args, &tmp1, i, env);
 }

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/05 13:31:29 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/06 14:45:04 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execution(t_list **list, t_env **env_list, char **env)
     (*list)->file_in = 0;
     (*list)->file_out = 1;
     change_env_last_cmd(*list, env_list);
-    set_here_doc(list, -1, 0);
+    set_here_doc(list, -1, 0, *env_list);
     if ((*list)->nbr == 1)
     {
 	if((*list)->cmd == NULL && (*list)->redir[0] == NULL)

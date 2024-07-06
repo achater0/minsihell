@@ -6,13 +6,13 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:49:08 by achater           #+#    #+#             */
-/*   Updated: 2024/07/05 13:24:13 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/06 14:44:34 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	set_here_doc(t_list **list, int i, int j)
+void	set_here_doc(t_list **list, int i, int j, t_env *env_list)
 {
 	int	fd[2];
 	char	*line;
@@ -37,6 +37,7 @@ void	set_here_doc(t_list **list, int i, int j)
 						free(line);
 						break ;
 					}
+					line = expand_in_here_doc(line, env_list, list[i]->flag_here_doc);
 					write(fd[1], line, ft_strlen(line));
 					write(fd[1], "\n", 1);
 					free(line);
