@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:40:37 by achater           #+#    #+#             */
-/*   Updated: 2024/06/30 16:40:56 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/07 12:35:59 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	ft_cd(char **args, t_env *env_list)
 	if (args == NULL)
 		write(2, "no path given\n", 14);
 	else if (chdir(args[0]) == -1)
+	{
 		printf("minishell: cd: %s: No such file or directory\n", args[0]);
+		exit_status(1);
+	}
 	newpwd = getcwd(NULL, 0);
 	while (env_list->next)
 	{

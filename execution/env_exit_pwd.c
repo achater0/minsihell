@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:43:38 by achater           #+#    #+#             */
-/*   Updated: 2024/06/30 16:44:07 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/07 12:41:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_env(t_env *env_list, char **args)
 	if (args && args[0])
 	{
 		printf("env: %s: No such file or directory\n", args[0]);
+		exit_status(127);
 		return;
 	}
 	while (env_list)
@@ -41,18 +42,17 @@ void	ft_exit(char **args, t_list *cmds)
 	if (args && x > 1 && ft_is_number(args[0]) == 1)
 	{
 		printf("minishell: exit: too many arguments\n");
+		exit_status(1);
 		return ;
 	}
 	if (args && x == 1 && ft_is_number(args[0]) == 1)
 		i = ft_atoi(args[0]);
 	if (args)
-	{
 		if (ft_is_number(args[0]) == 0)
 		{
 			printf("minishell: exit: %s: numeric argument required\n", args[0]);
 			exit(255);
 		}
-	}
 	exit(i);
 }
 char	*ft_getcwd(t_env *env_list)

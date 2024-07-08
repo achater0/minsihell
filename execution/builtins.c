@@ -6,11 +6,20 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/06 14:45:04 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/07 13:35:45 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int exit_status(int status)
+{
+	static int var;
+
+	if (status != -1)
+		var = status;
+	return (var);
+}
 
 void	close_here_doc(t_list **list, int i)
 {
@@ -51,6 +60,7 @@ void	execution(t_list **list, t_env **env_list, char **env)
     int	fd[2];
     pid_t *pid = malloc(sizeof(pid_t) * (*list)->nbr);
     int prev_pipe = -1;
+    int status;
 
     i = 0;
     (*list)->file_in = 0;
@@ -64,7 +74,7 @@ void	execution(t_list **list, t_env **env_list, char **env)
         if ((*list)->redir[0] != NULL && (*list)->cmd == NULL)
 		handle_redir_no_command(*list, 0);
 	else
-            handle_one_cmd(*list, env_list);
+            handle_one_cmd(*list, env_list, 0);
     }
     else
     {
@@ -139,11 +149,10 @@ void	execution(t_list **list, t_env **env_list, char **env)
         	i++;
         }
 	close(fd[0]);
-	int status;
 	i = -1;
 	while (++i < (*list)->nbr)
 		waitpid(pid[i], &status, 0);
-	printf("%d\n", WEXITSTATUS(status));
+	exit_status(WEXITSTATUS(status));
     }
     close_here_doc(list, -1);
 }

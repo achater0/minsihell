@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/06 14:08:18 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/07 13:26:33 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,10 @@ int	key_exist(t_env *env, char *key)
 }
 
 
-void	split_by_equal(char *str, char **key, char **value)
+void	split_by_equal(char *str, char **key, char **value, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
 	if (str[i] == '=')
 	{
@@ -98,6 +96,8 @@ void	split_by_equal(char *str, char **key, char **value)
 	while (str[i] && str[i] != '=')
 		i++;
 	(*key) = malloc(i + 1);
+	if (!(*key))
+		error();
 	i = -1;
 	while (str[++i] && str[i] != '=')
 		(*key)[i] = str[i];
@@ -173,7 +173,7 @@ void	export_helper(char *key, char *value, t_env **env, t_env **tmp1)
 void	last_char_is_plus(int *i, char **args, char *key)
 {
 	printf("minishell: export: `%s': not a valid identifier\n", args[*i]);
-	(*i)++;
+	exit_status(1);
 	free(key);
 }
 void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
@@ -186,14 +186,15 @@ void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
 		if (args[i][0] == '\0')
 		{
 			printf("minishell: export: `': not a valid identifier\n");
+			exit_status(1);
 			i++;
 			continue;
 		}
-		split_by_equal(args[i], &key, &value);
+		split_by_equal(args[i], &key, &value, 0);
 		if (key == NULL)
 		{
 			printf("minishell: export: `=': not a valid identifier\n");
-			i++;
+			exit_status(1);
 			continue;
 		}
 		if (check_args(key, "export") == 1
