@@ -6,16 +6,16 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/06 14:37:59 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/09 12:29:30 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void f()
-// {
-//     system("leaks minishell");
-// }
+void f()
+{
+    system("leaks minishell");
+}
 
 int main(int arc, char **arv, char **env)
 {
@@ -44,7 +44,7 @@ int main(int arc, char **arv, char **env)
             add_history(line);
             if (!list)
                 continue;
-            execution(list, &env_list, env);
+            execution(list, &env_list);
         }
         if (!line)
             exit(1);

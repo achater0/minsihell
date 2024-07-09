@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/07 13:35:40 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/09 12:29:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void ft_lstadd_back(t_env **lst, t_env *new);
 char **ft_split(char const *s, char c);
 int ft_lstsize(t_env *lst);
 t_env    *ft_lstlast(t_env *lst);
-void execution(t_list **list, t_env **env_list,char **env);
+void execution(t_list **list, t_env **env_list);
 void set_env(char **env, t_env **env_list, int i);
 int    ft_is_alpha(char c);
 int check_args(char *args,char *str);
@@ -118,7 +118,8 @@ char	**struct_to_char(t_env *env_list);
 int	count_args0(char **args);
 void	handle_one_cmd(t_list *cmds, t_env **env_list, int status);
 void	close_here_doc(t_list **list, int i);
-int exit_status(int status);
+void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe);
+void	ft_builtins(t_list *cmds, t_env **env_list);
 
 /*******************************************************parssing*******************************************************/
 char *ft_substr(char const *s, unsigned int start, int len);
@@ -149,6 +150,7 @@ char **change_tab(char **old_tab, char *str);
 char *protect_env(char *str, int i);
 char **ft_realloc(char **tab, char *str);
 char	*protect_new_str(char *str);
+int	search_for_value(char *str, char *s);
 //helpers_function1
 char *ft_strstr(const char *haystack, const char *needle);
 char	*ft_strdup(char *s1);
@@ -208,12 +210,12 @@ void add_tab(char *line, char **tab, int len);
 
 //parssing2
 int continue_parssing(t_list **list, char **tab, char *line, t_env *env_list);
-
+int exit_status(int status);
 //parssing3
 int count_pipe(char **tab);
 int finnd_pipe(char **tab, int count);
 int find_redir(char **tab, int count);
-
+char	*int_to_str(int num);
 //signal
 void signal_handler(int sig);
 #endif
