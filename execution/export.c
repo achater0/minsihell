@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/11 11:25:16 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/12 09:37:24 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,10 @@ void	freee_list(t_env **env)
 	while (tmp)
 	{
 		tmp1 = tmp->next;
-		// free(tmp->key);
-		// free(tmp->value);
+		// if (tmp->key)
+		// 	free(tmp->key);
+		// if (tmp->value)
+		// 	free(tmp->value);
 		free(tmp);
 		tmp = tmp1;
 	}
