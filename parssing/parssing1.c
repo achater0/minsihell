@@ -6,7 +6,7 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:38:45 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/06 21:23:53 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/07/13 02:58:30 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	add_tab(char *line, char **tab, int len)
 	ft_strncpy(tab[i], line, len);
 }
 
-char	**handle_parssing(char *line)
+char	**handle_parssing(char *line, t_env *env_list)
 {
 	int		count;
 	t_check	check;
@@ -35,6 +35,7 @@ char	**handle_parssing(char *line)
 	char	**tab;
 
 	i = 0;
+	tab = NULL;
 	count = count_cmds(line);
 	tab = malloc(sizeof(char *) * (count + 1) + 1);
 	if (!tab)
@@ -50,6 +51,7 @@ char	**handle_parssing(char *line)
 		check_check(line, &check);
 		handle_line(&line, tab, check);
 	}
+	tab = expand(tab, env_list, 0);
 	return (tab);
 }
 
@@ -97,7 +99,7 @@ t_list	**parssing(char *line, t_env *env_list)
 	}
 	if (count_quote(line) == 1)
 		return (NULL);
-	tab = handle_parssing(line);
+	tab = handle_parssing(line, env_list);
 	if (check_error(tab) == 1)
 		return (NULL);
 	list = allocation_list(tab);
@@ -106,6 +108,6 @@ t_list	**parssing(char *line, t_env *env_list)
 	free_tab(tab);
 	remove_quotes(list);
 	list[0]->exit = 0;
-	print_tab(list);//
+	print_tab(list);
 	return (list);
 }

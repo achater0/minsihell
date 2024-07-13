@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/11 11:26:03 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/13 09:37:44 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void f()
 
 int main(int arc, char **arv, char **env)
 {
-    // atexit(f);
+    atexit(f);
     (void)arc;
     (void)arv;
     char *line;
@@ -49,11 +49,13 @@ int main(int arc, char **arv, char **env)
         if (!line)
         {
             // free_list(list);
+            free(line);//??
             // freee_list(&env_list);
             exit(1);
         }
-        // free_list(list);
-        // free(env_list);
-        // free(line);
+        free_list(list);
+        free(line);
     }
+    free_list(list);
+    free(line);
 }

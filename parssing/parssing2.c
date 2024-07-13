@@ -6,7 +6,7 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 11:05:44 by haalouan          #+#    #+#             */
-/*   Updated: 2024/06/24 14:35:09 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/07/13 03:09:56 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 static void	arg(char **tab, t_list *list, int *ii, int *i)
 {
-	while (tab[*ii] && tab[*ii][0] && is_character2(tab[*ii][0]) == 0)
-	{
-		if (tab[*ii] && (tab[*ii][0] == '<'
-			|| tab[*ii][0] == '>') && tab[(*ii) + 1])
-			(*ii) += 2;
-	}
+	continue_arg(tab, ii);
+	while (tab[*ii] && ft_strcmp(tab[*ii], "") == 0)
+		(*ii)++;
 	if (tab[*ii] && is_character2(tab[*ii][0]) == 1 && list->cmd == NULL)
 	{
 		list->cmd = malloc(ft_strlen(tab[*ii]) + 1);
@@ -84,7 +81,7 @@ static void	put_in_list(t_list **list, char **tab, int count, int size)
 		next_pipe = finnd_pipe(tab, count);
 		list[k] = list_init(list[k]);
 		if (tab && tab[pipe] && tab[pipe][0] && tab[pipe][0] != '>'
-			&& tab[pipe][0] != '<')
+			&& tab[pipe][0] != '<' && ft_strcmp(tab[pipe], "") != 0)
 		{
 			list[k]->cmd = malloc(ft_strlen(tab[pipe]) + 1);
 			if (!list[k]->cmd)
@@ -104,12 +101,19 @@ int	continue_parssing(t_list **list, char **tab, char *line, t_env *env_list)
 {
 	int	count;
 	int	size;
+	(void)env_list;
 	int	i;
 
 	i = 0;
 	count = count_cmds(line);
 	size = count_pipe(tab);
-	tab = expand(tab, env_list, 0);
+	// tab = expand(tab, env_list, 0);
+	// int r = 0;
+	// 		while (tab && tab[r])
+	// 		{
+	// 			printf("after : %s\n", tab[r]);
+	// 			r++;
+	// 		}
 	if (check_error2(tab) == 1)
 		return (1);
 	while (i <= size)

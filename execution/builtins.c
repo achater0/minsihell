@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/12 10:21:40 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/13 09:43:16 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_builtins(t_list *cmds, t_env **env_list)
 		ft_exit(cmds->args, cmds);
 	else
 		handle_cmd(cmds, new_env);
-	free(new_env);
+	free_struct(new_env);
 }
 
 void	execution(t_list **list, t_env **env_list)

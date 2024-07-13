@@ -6,11 +6,17 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 17:53:18 by haalouan          #+#    #+#             */
-/*   Updated: 2024/06/24 14:46:07 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/07/12 09:07:47 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	get_key_value(char **l, char **k, char **v, int i)
+{
+	*k = get_env_key((*l), i);
+	*v = expand_digit((*l) + i);
+}
 
 static void	continue_expand_in_here_doc(char **l, t_env *env_list,
 	int i, char *v)
@@ -67,3 +73,4 @@ char	*expand_in_here_doc(char *line, t_env *env_list, int ex)
 	}
 	return (line);
 }
+
