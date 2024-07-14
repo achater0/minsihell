@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/14 16:38:48 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/14 17:30:39 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	ft_builtins(t_list *cmds, t_env **env_list);
 void	freee_list(t_env **env);
 void free_struct(char **new_env);
 char	*ft_strjoin_free(char *s1, char *s2);
+void	split_by_equal(char *str, char **key, char **value, int i);
 
 /*******************************************************parssing*******************************************************/
 char *ft_substr(char const *s, unsigned int start, int len);

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 10:43:11 by achater           #+#    #+#             */
-/*   Updated: 2024/07/14 10:37:53 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/14 17:34:28 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void set_env(char **env, t_env **env_list, int i)
 	char	*pdw;
 
 	pdw = getcwd(NULL, 0);
-	s_env = NULL;
+	s_env = malloc(sizeof(char *) * 2);
 	if (env[0] == NULL)
 	{
 		ft_lstadd_back(env_list, ft_lstnew("PWD", pdw));
@@ -68,10 +68,9 @@ void set_env(char **env, t_env **env_list, int i)
 	free(pdw);
 	while(env[++i])
 	{
-		s_env = ft_split(env[i], '=');
+		split_by_equal(env[i], &s_env[0], &s_env[1], 0);
 		if (ft_strcmp(s_env[0],"SHLVL") == 0)
 			s_env[1] = shlvl_increment(s_env[1]);
-		// printf("data : %s\n", s_env[1]);
 		if (ft_strcmp(s_env[0],"OLDPWD") == 0)
 		{
 			free(s_env[1]);
@@ -79,6 +78,6 @@ void set_env(char **env, t_env **env_list, int i)
 		}
 		else
 			ft_lstadd_back(env_list, ft_lstnew(s_env[0], s_env[1]));
-		free(s_env);
 	}
+	// ft_free(s_env);
 }
