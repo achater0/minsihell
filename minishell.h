@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/14 17:30:39 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/20 15:01:47 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,11 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status);
 void	close_here_doc(t_list **list);
 void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe);;
 void	ft_builtins(t_list *cmds, t_env **env_list);
-void	freee_list(t_env **env);
-void free_struct(char **new_env);
+char **free_struct(char **new_env);
 char	*ft_strjoin_free(char *s1, char *s2);
+void	split_by_equal(char *str, char **key, char **value, int i);
+void	print_env(t_env *lst, int (*cmp)(char*,char*));
+int	key_exist(t_env *env, char *key);
 void	split_by_equal(char *str, char **key, char **value, int i);
 
 /*******************************************************parssing*******************************************************/
