@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers_functions1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:27:26 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/21 10:46:19 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/10 10:29:39 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ char	*ft_strstr(const char *haystack, const char *needle)
 
 char	*ft_strdup(char *s1)
 {
-	char	*s2;
-	size_t	len;
+	char	*s2 = NULL;
+	size_t	len = 0;
 	size_t	i;
 
 	i = 0;

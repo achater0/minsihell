@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:49:08 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:27:06 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/20 12:09:01 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	set_here_doc(t_list **list, int i, int j, t_env *env_list)
 {
-	int		fd[2];
+	int	fd[2];
 	char	*line;
 
 	while (++i < (*list)->nbr)
@@ -22,8 +22,10 @@ void	set_here_doc(t_list **list, int i, int j, t_env *env_list)
 		j = 0;
 		while (list[i]->redir[j])
 		{
+			// close(list[i]->here_doc);
 			if (j > 0 && list[i]->here_doc > 2)
 			{
+				printf("close here_doc\n");
 				close(list[i]->here_doc);
 				list[i]->here_doc = 0;
 			}
@@ -39,8 +41,7 @@ void	set_here_doc(t_list **list, int i, int j, t_env *env_list)
 						free(line);
 						break ;
 					}
-					line = expand_in_here_doc(line, env_list,
-							list[i]->flag_here_doc);
+					line = expand_in_here_doc(line, env_list, list[i]->flag_here_doc);
 					write(fd[1], line, ft_strlen(line));
 					write(fd[1], "\n", 1);
 					free(line);

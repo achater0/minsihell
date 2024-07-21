@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:31:52 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:13:55 by achater          ###   ########.fr       */
+/*   Updated: 2024/06/30 16:55:44 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ft_strcmp(char *arg, char *str)
 		return (1);
 	return (0);
 }
-
 static int	f(char *s4, char *s2, char *s1, char *s3)
 {
 	int	i;
@@ -83,7 +82,6 @@ char	*ft_strjoin3(char *s1, char *s2, char *s3)
 	s4[i] = '\0';
 	return (s4);
 }
-
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
@@ -105,7 +103,6 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
-
 int	ft_atoi(const char *str)
 {
 	int	i;

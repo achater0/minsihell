@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:09:14 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/20 13:43:00 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	redir_helper(t_list *list, int i, int x)
 					O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (list->file_out < 0)
 			return (printf("minishell: %s Permission denied",
-					list->redir[i + 1]));
+				list->redir[i + 1]));
 	}
 	if (x == 3)
 	{
@@ -35,7 +35,7 @@ int	redir_helper(t_list *list, int i, int x)
 		list->file_in = open(list->redir[i + 1], O_RDONLY);
 		if (list->file_in < 0)
 			return (printf("minishell: %s: No such file or directory\n",
-					list->redir[i + 1]));
+				list->redir[i + 1]));
 	}
 	return (0);
 }

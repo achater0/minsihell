@@ -6,7 +6,7 @@
 /*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 00:31:58 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/14 03:35:42 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/07/10 10:28:04 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char	*ft_str_replace(char *tab, const char *key, char *value)
 {
-	size_t	key_len;
-	size_t	value_len;
-	char	*occurrence;
-	size_t	new_size;
-	char	*new_str;
+	size_t	key_len = 0;
+	size_t	value_len = 0;
+	char	*occurrence = NULL;
+	size_t	new_size = 0;
+	char	*new_str = NULL;
 
 	if (!tab || !key || !value)
 		return (ft_strdup(tab));
@@ -41,7 +41,7 @@ char	*ft_str_replace(char *tab, const char *key, char *value)
 
 char	*get_env_value(char *key, t_env *export_i)
 {
-	t_env	*tmp;
+	t_env	*tmp = NULL;
 	char	*value;
 
 	value = NULL;
@@ -90,28 +90,29 @@ char	*get_env_key(char *str, int i)
 char	*protect_env(char *str, int key)
 {
 	char	*value;
-	t_int	f;
+	int		i;
+	int		j;
 
-	f.i = 0;
-	f.j = 0;
+	i = 0;
+	j = 0;
 	value = NULL;
 	value = malloc(ft_strlen(str) + 2 + 1);
 	if (!value)
 		exit(EXIT_FAILURE);
-	value[f.j++] = '\"';
-	while ((key == 1 && str[f.i] == ' ') || str[f.i] == '\t')
-		f.i++;
-	while (str && str[f.i])
-		value[f.j++] = str[f.i++];
-	if (key == 1 && (value[f.j - 1] == ' ' || value[f.j - 1] == '\t'))
+	value[j++] = '\"';
+	while ((key == 1 && str[i] == ' ') || str[i] == '\t')
+		i++;
+	while (str && str[i])
+		value[j++] = str[i++];
+	if (key == 1 && (value[j - 1] == ' ' || value[j - 1] == '\t'))
 	{
-		f.j--;
-		while (value[f.j] == ' ' || value[f.j] == '\t')
-			f.j--;
-		f.j++;
+		j--;
+		while (value[j] == ' ' || value[j] == '\t')
+			j--;
+		j++;
 	}
-	value[f.j++] = '\"';
-	value[f.j] = '\0';
+	value[j++] = '\"';
+	value[j] = '\0';
 	free(str);
 	return (value);
 }
