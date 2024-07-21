@@ -12,14 +12,14 @@ SRCS =	main.c  ./parssing/parssing3.c ./parssing/remove_quotes.c ./parssing/hand
 		./execution/lst_utils.c ./execution/utils2.c ./execution/utils3.c \
 		./execution/unset.c ./execution/set_env.c ./execution/handl_one_cmd.c ./parssing/expand7.c \
 		./parssing/remove_dollar.c ./parssing/parssing5.c ./execution/handl_mult_cmd.c \
-		./execution/export_utils.c
+		./execution/export_utils.c ./execution/handl_mult_cmd1.c ./execution/utils4.c
 
 OBJS = ${SRCS:.c=.o}
 NAME = minishell
 CC = cc
 RM = rm -f
-READLINE_L = /Users/achater/.brew/opt/readline/lib
 READLINE_I = /Users/achater/.brew/opt/readline/include
+READLINE_L = /Users/achater/.brew/opt/readline/lib
 
 CFLAGS = -Wall -Wextra -g -I $(READLINE_I) #-g -fsanitize=address
 LDFLAGS = -L$(READLINE_L) -lreadline -lhistory
