@@ -6,12 +6,11 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:29:29 by achater           #+#    #+#             */
-/*   Updated: 2024/07/03 11:01:11 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/21 11:08:36 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 char	*find_path(char *cmd, char **envp)
 {
@@ -44,22 +43,20 @@ char	*find_path(char *cmd, char **envp)
 
 int	ft_strchr(char *str, char caractere)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
-		if(str[i] == caractere)
+		if (str[i] == caractere)
 			return (1);
 		i++;
 	}
 	return (0);
-
 }
 
-void	execute(char **cmds, char **envp,char *cmd)
+void	execute(char **cmds, char **envp, char *cmd)
 {
-	// char	**cmds;
 	char	*path;
 	int		i;
 
@@ -83,17 +80,17 @@ void	execute(char **cmds, char **envp,char *cmd)
 	}
 }
 
-char **cmds_whit_args(char *cmd, char **args)
+char	**cmds_whit_args(char *cmd, char **args)
 {
-	char **cmds;
-	int i;
+	char	**cmds;
+	int		i;
 
 	i = 0;
 	cmds = malloc(sizeof(char *) * (count_args0(args) + 2));
-	if(cmds == NULL)
+	if (cmds == NULL)
 		return (NULL);
 	cmds[0] = cmd;
-	while(args[i])
+	while (args[i])
 	{
 		cmds[i + 1] = args[i];
 		i++;
@@ -102,11 +99,11 @@ char **cmds_whit_args(char *cmd, char **args)
 	return (cmds);
 }
 
-void	handle_cmd(t_list *cmds,char **env)
+void	handle_cmd(t_list *cmds, char **env)
 {
-	char **args;
+	char	**args;
 
-	if(cmds->args == NULL)
+	if (cmds->args == NULL)
 	{
 		args = malloc(sizeof(char *) * 2);
 		args[0] = cmds->cmd;
@@ -114,5 +111,5 @@ void	handle_cmd(t_list *cmds,char **env)
 	}
 	else
 		args = cmds_whit_args(cmds->cmd, cmds->args);
-	execute(args, env,cmds->cmd);
+	execute(args, env, cmds->cmd);
 }
