@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 12:25:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:04:45 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/24 16:35:47 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe)
 	pid = malloc(sizeof(int) * (*list)->nbr);
 	while (++i < (*list)->nbr)
 	{
+		ignore_signals();
 		if (pipe(fd) == -1)
 			error();
 		pid[i] = fork();
@@ -89,14 +90,12 @@ void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe)
 			error();
 		if (pid[i] == 0)
 		{
+			setup_signal_handlers(sig_handler_child, sig_handler_child);
 			child_of_mult_cmd(list, i, prev_pipe, fd);
 			child_of_mult_cmd2(list, env_list, i, fd);
 		}
 		else
-		{
-			(1) && (close(prev_pipe), close(fd[1]));
-			prev_pipe = fd[0];
-		}
+			(1) && (close(prev_pipe), close(fd[1]), prev_pipe = fd[0]);
 		if (i != (*list)->nbr - 1)
 			help_fct1(list, i);
 	}

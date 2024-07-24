@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/20 16:29:00 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/07/24 16:48:37 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	main_loop(char *line, t_env *env_list, t_list **list)
 {
 	while (1337)
 	{
-		g_status = 0;
+		init_signals();
 		line = readline("=> "ANSI_COLOR_YELLOW
 				"minishell => " ANSI_RESET_ALL "");
 		if (line)
@@ -24,7 +24,10 @@ void	main_loop(char *line, t_env *env_list, t_list **list)
 			list = parssing(line, env_list);
 			add_history(line);
 			if (!list)
+			{
+				free(line);
 				continue ;
+			}
 			execution(list, &env_list);
 		}
 		if (!line)

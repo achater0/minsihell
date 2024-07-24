@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/21 11:14:54 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/24 16:57:26 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*ft_strjoin(char *s1, char *s2);
 void	handle_redir(t_list *list, int i);
 void	handle_redir_no_command(t_list *list, int i);
 char	*shlvl_increment(char *str);
-void	set_here_doc(t_list **list, int i, int j, t_env *env_list);
+int		set_here_doc(t_list **list, int i, int j, t_env *env_list);
 void	ft_env(t_env *env_list, char **args);
 int		ft_is_number(char *str);
 int		ft_atoi(const char *str);
@@ -198,5 +198,13 @@ int		finnd_pipe(char **tab, int count);
 int		find_redir(char **tab, int count);
 char	*int_to_str(int num);
 void	signal_handler(int sig);
-void print_tab(t_list **list);
+void	print_tab(t_list **list);
+void	init_signals(void);
+void	setup_signal_handlers(void (*int_)(int), void (*quit_)(int));
+void	sig_handler_child(int sig);
+void	ignore_signals(void);
+void	exit_helper(t_list *cmds, int status);
+int		check_builtins(char *cmd);
+void	handle_sigint(int signum);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:06:57 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/24 16:57:05 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	check_builtins(char *cmd)
 
 void	child_help(t_list *cmds, t_env **env_list, char **new_env)
 {
+	setup_signal_handlers(sig_handler_child, sig_handler_child);
 	dup2(cmds->file_in, STDIN_FILENO);
 	dup2(cmds->file_out, STDOUT_FILENO);
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
@@ -101,6 +102,7 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)
 		return (free(new_env));
 	if (fct_helper(cmds, env_list) == 0)
 	{
+		ignore_signals();
 		pid = fork();
 		(pid == -1) && (error(), pid = -1);
 		if (pid == 0)
@@ -111,9 +113,7 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)
 				close(cmds->file_in);
 			if (cmds->file_out != 1)
 				close(cmds->file_out);
-			wait(&status);
-			if (check_builtins(cmds->cmd) == 0)
-				exit_status(WEXITSTATUS(status));
+			exit_helper(cmds, status);
 		}
 	}
 	free_struct(new_env);
