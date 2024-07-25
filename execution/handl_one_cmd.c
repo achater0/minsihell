@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/24 16:57:05 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 09:21:54 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,48 +47,33 @@ int	check_builtins(char *cmd)
 
 void	child_help(t_list *cmds, t_env **env_list, char **new_env)
 {
+	(void)env_list;
 	setup_signal_handlers(sig_handler_child, sig_handler_child);
 	dup2(cmds->file_in, STDIN_FILENO);
 	dup2(cmds->file_out, STDOUT_FILENO);
-	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		ft_echo(cmds->args, 0, 0, 0);
-	else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
-		ft_env(*env_list, cmds->args);
-	else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args == NULL)
-		ft_export(cmds->args, env_list);
-	else if (ft_strcmp(cmds->cmd, "pwd") == 0
-		|| ft_strcmp(cmds->cmd, "PWD") == 0)
-		ft_pwd(*env_list);
-	if (check_builtins(cmds->cmd) == 1)
-		exit(0);
-	else
-		handle_cmd(cmds, new_env);
+	handle_cmd(cmds, new_env);
 }
 
 int	fct_helper(t_list *cmds, t_env **env_list)
 {
 	if (ft_strcmp(cmds->cmd, "cd") == 0)
-	{
 		ft_cd(cmds->args, *env_list, 0, 0);
-		return (1);
-	}
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-	{
 		ft_unset(env_list, cmds->args);
-		return (1);
-	}
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-	{
-		ft_exit(cmds->args, cmds);
-		return (1);
-	}
-	else if (ft_strcmp(cmds->cmd, "export") == 0 && cmds->args != NULL)
-	{
+		ft_exit(cmds->args, cmds, 0, 0);
+	else if (ft_strcmp(cmds->cmd, "export") == 0)
 		ft_export(cmds->args, env_list);
-		return (1);
-	}
+	else if (ft_strcmp(cmds->cmd, "env") == 0 && cmds)
+		ft_env(*env_list, cmds->args);
+	else if (ft_strcmp(cmds->cmd, "pwd") == 0
+		|| ft_strcmp(cmds->cmd, "PWD") == 0)
+		ft_pwd(*env_list);
+	else if (ft_strcmp(cmds->cmd, "echo") == 0)
+		ft_echo(cmds->args, 0, 0, 0);
 	else
 		return (0);
+	return (1);
 }
 
 void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)

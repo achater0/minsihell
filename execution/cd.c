@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:40:37 by achater           #+#    #+#             */
-/*   Updated: 2024/07/20 14:32:12 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 08:53:29 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ void	ft_cd(char **args, t_env *env_list, int x, int y)
 		ft_lstadd_back(&env_list, ft_lstnew("OLDPWD", oldpwd));
 	if (y == 0)
 		ft_lstadd_back(&env_list, ft_lstnew("PWD", newpwd));
-	(x == 1) && (free(oldpwd), x = 1);
-	(y == 1) && (free(newpwd), y = 1);
+	(x == 1) && (free(oldpwd), x = exit_status(0));
+	(y == 1) && (free(newpwd), y = exit_status(0));
 }

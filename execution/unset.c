@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 11:24:13 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:13:19 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 08:55:23 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	ft_unset(t_env **env_list, char **args)
 	int	i;
 
 	i = 0;
-	if (args == NULL)
+	if (args == NULL && exit_status(0) == 0)
 		return ;
-	if (env_list == NULL)
+	if (env_list == NULL && exit_status(0) == 0)
 		return ;
 	while (args[i])
 	{
@@ -85,4 +85,5 @@ void	ft_unset(t_env **env_list, char **args)
 		ft_remove(env_list, args[i]);
 		i++;
 	}
+	exit_status(0);
 }

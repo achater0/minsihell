@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:43:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/20 14:44:30 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 09:20:50 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_env(t_env *env_list, char **args)
 	if (args && args[0])
 	{
 		printf("env: %s: No such file or directory\n", args[0]);
-		exit_status(127);
+		exit_status(1);
 		return ;
 	}
 	while (env_list)
@@ -47,15 +47,11 @@ void	ft_env(t_env *env_list, char **args)
 			printf("%s=%s\n", env_list->key, env_list->value);
 		env_list = env_list->next;
 	}
+	exit_status(0);
 }
 
-void	ft_exit(char **args, t_list *cmds)
+void	ft_exit(char **args, t_list *cmds, int x, unsigned char i)
 {
-	unsigned char	i;
-	int				x;
-
-	x = 0;
-	i = 0;
 	if (cmds->nbr == 1)
 		printf("exit\n");
 	while (args && args[x])
@@ -75,6 +71,8 @@ void	ft_exit(char **args, t_list *cmds)
 			exit(255);
 		}
 	}
+	if (!args)
+		exit(exit_status(-1));
 	exit(i);
 }
 
@@ -106,4 +104,5 @@ void	ft_pwd(t_env *env_list)
 		return ;
 	}
 	printf("%s\n", pwd);
+	exit_status(0);
 }

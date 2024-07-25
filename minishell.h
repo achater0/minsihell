@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/24 16:57:26 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 09:21:03 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	ft_echo(char **args, int n, int j, int x);
 void	change_env_last_cmd(t_list *cmds, t_env **env_list);
 void	ft_cd(char **args, t_env *env_list, int x, int y);
 void	ft_env(t_env *env_list, char **args);
-void	ft_exit(char **args, t_list *cmds);
+void	ft_exit(char **args, t_list *cmds, int x, unsigned char i);
 void	ft_pwd(t_env *env_list);
 void	ft_unset(t_env **env_list, char **args);
 void	ft_free(char **str);

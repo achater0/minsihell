@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/23 10:31:09 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 09:21:09 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_builtins(t_list *cmds, t_env **env_list)
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
 		ft_unset(env_list, cmds->args);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		ft_exit(cmds->args, cmds);
+		ft_exit(cmds->args, cmds, 0, 0);
 	else
 		handle_cmd(cmds, new_env);
 	free_struct(new_env);

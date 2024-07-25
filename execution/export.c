@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/20 14:52:22 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 10:01:49 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	ft_export(char **args, t_env **env)
 	int		i;
 
 	i = -1;
+	exit_status(0);
 	tmp1 = *env;
 	if (args == NULL)
 		print_env(*env, ft_strcmp);
