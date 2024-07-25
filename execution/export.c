@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/25 10:01:49 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 10:51:08 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,12 @@ void	export_helper(char *key, char *value, t_env **env, t_env **tmp1)
 	key[ft_strlen(key) - 1] = '\0';
 	if (key_exist(*env, key) == 0)
 		return (ft_lstadd_back(env, ft_lstnew(key, value)));
-	if (value == NULL)
-		return (free(key));
 	while (tmp1)
 	{
 		if (ft_strcmp((*tmp1)->key, key) == 0)
 		{
-			tmp = ft_strjoin((*tmp1)->value, value);
-			free((*tmp1)->value);
+			tmp = ft_strjoin((*tmp1)->value, value, -1, 0);
 			(*tmp1)->value = tmp;
-			free(value);
 			break ;
 		}
 		*tmp1 = (*tmp1)->next;
@@ -110,12 +106,12 @@ void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
 
 void	ft_export(char **args, t_env **env)
 {
-	t_env	*tmp1;
 	int		i;
+	t_env	*tmp1;
 
 	i = -1;
-	exit_status(0);
 	tmp1 = *env;
+	exit_status(0);
 	if (args == NULL)
 		print_env(*env, ft_strcmp);
 	else

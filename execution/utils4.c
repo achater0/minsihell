@@ -6,27 +6,29 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 11:23:28 by achater           #+#    #+#             */
-/*   Updated: 2024/07/23 15:57:20 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 10:50:32 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2, int i, int j)
 {
 	char	*s3;
-	int		i;
-	int		j;
 
-	i = -1;
-	j = 0;
 	s3 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (s3 == NULL)
 		return (NULL);
 	if (s1 == NULL)
+	{
+		free(s3);
 		return (s2);
+	}
 	if (s2 == NULL)
+	{
+		free(s3);
 		return (s1);
+	}
 	while (s1[++i])
 		s3[i] = s1[i];
 	while (s2[j])
@@ -35,7 +37,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 		j++;
 	}
-	s3[i] = '\0';
+	(1) && (free(s1), free(s2), s3[i] = '\0');
 	return (s3);
 }
 

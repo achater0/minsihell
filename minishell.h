@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/25 09:21:03 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 10:50:55 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 void	error(void);
 void	execute(char **cmds, char **envp, char *cmd);
 int		change_value(t_env **env_list, char *value);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strjoin(char *s1, char *s2, int i, int j);
 void	handle_redir(t_list *list, int i);
 void	handle_redir_no_command(t_list *list, int i);
 char	*shlvl_increment(char *str);
