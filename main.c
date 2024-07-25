@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/25 11:31:55 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 15:03:00 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	main_loop(char *line, t_env *env_list, t_list **list)
 		if (!line)
 		{
 			free(line);
-			exit(1);
+			printf("exit");
+			exit(exit_status(-1));
 		}
 		free_list(list);
 		free(line);
