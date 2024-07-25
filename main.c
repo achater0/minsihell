@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:35:11 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/25 09:03:03 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 11:31:55 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int	main(int arc, char **arv, char **env)
 	env_list = NULL;
 	(void)arc;
 	(void)arv;
+	if (env[0] == NULL)
+	{
+		printf("Error: env is NULL\n");
+		exit(1);
+	}
 	set_env(env, &env_list, -1);
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:43:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/25 09:20:50 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/25 11:34:53 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_getcwd(t_env *env_list)
 		while (env_list)
 		{
 			if (ft_strcmp(env_list->key, "PWD") == 0)
-				return (env_list->value);
+				return (ft_strdup(env_list->value));
 			env_list = env_list->next;
 		}
 	}
@@ -104,5 +104,6 @@ void	ft_pwd(t_env *env_list)
 		return ;
 	}
 	printf("%s\n", pwd);
+	free(pwd);
 	exit_status(0);
 }
