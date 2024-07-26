@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/26 08:07:27 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/26 13:16:47 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)
 		fct_helper(cmds, env_list);
 		(1) && (close(cmds->file_in), close(cmds->file_out));
 		(1) && (dup2(in, 0), dup2(out, 1), close(in), close(out));
+		free_struct(new_env);
 		return ;
 	}
 	non_builtins(cmds, new_env, status, pid);
