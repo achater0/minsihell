@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/25 14:36:45 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/26 08:07:27 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,27 @@ int	check_builtins(char *cmd)
 	return (0);
 }
 
-void	child_help(t_list *cmds, t_env **env_list, char **new_env)
+void	non_builtins(t_list *cmds, char **new_env, int status, int pid)
 {
-	(void)env_list;
-	setup_signal_handlers(sig_handler_child, sig_handler_child);
-	dup2(cmds->file_in, STDIN_FILENO);
-	dup2(cmds->file_out, STDOUT_FILENO);
-	handle_cmd(cmds, new_env);
+	ignore_signals();
+	pid = fork();
+	(pid == -1) && (error(), pid = -1);
+	if (pid == 0)
+	{
+		setup_signal_handlers(sig_handler_child, sig_handler_child);
+		dup2(cmds->file_in, STDIN_FILENO);
+		dup2(cmds->file_out, STDOUT_FILENO);
+		handle_cmd(cmds, new_env);
+	}
+	else
+	{
+		if (cmds->file_in != 0)
+			close(cmds->file_in);
+		if (cmds->file_out != 1)
+			close(cmds->file_out);
+		exit_helper(cmds, status);
+	}
+	free_struct(new_env);
 }
 
 int	fct_helper(t_list *cmds, t_env **env_list)
@@ -80,26 +94,26 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)
 {
 	int		pid;
 	char	**new_env;
+	int		in;
+	int		out;
 
+	pid = 0;
 	new_env = struct_to_char(*env_list);
 	handle_redir(cmds, 0);
 	if (cmds->file_in < 0 || cmds->file_out < 0)
-		return ((void)free_struct(new_env));
-	if (fct_helper(cmds, env_list) == 0)
 	{
-		ignore_signals();
-		pid = fork();
-		(pid == -1) && (error(), pid = -1);
-		if (pid == 0)
-			child_help(cmds, env_list, new_env);
-		else
-		{
-			if (cmds->file_in != 0)
-				close(cmds->file_in);
-			if (cmds->file_out != 1)
-				close(cmds->file_out);
-			exit_helper(cmds, status);
-		}
+		(cmds->file_in != 0) && (close(cmds->file_in));
+		(cmds->file_out != 1) && (close(cmds->file_out));
+		return ((void)free_struct(new_env));
 	}
-	free_struct(new_env);
+	if (check_builtins(cmds->cmd) == 1)
+	{
+		(1) && (in = dup(STDIN_FILENO), out = dup(STDOUT_FILENO));
+		(1) && (dup2(cmds->file_in, 0), dup2(cmds->file_out, 1));
+		fct_helper(cmds, env_list);
+		(1) && (close(cmds->file_in), close(cmds->file_out));
+		(1) && (dup2(in, 0), dup2(out, 1), close(in), close(out));
+		return ;
+	}
+	non_builtins(cmds, new_env, status, pid);
 }
