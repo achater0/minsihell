@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/26 13:16:47 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/27 11:49:53 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	non_builtins(t_list *cmds, char **new_env, int status, int pid)
 int	fct_helper(t_list *cmds, t_env **env_list)
 {
 	if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds->args, *env_list, 0, 0);
+		ft_cd(cmds->args, *env_list);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
 		ft_unset(env_list, cmds->args);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)

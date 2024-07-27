@@ -6,13 +6,13 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/26 16:10:58 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/27 11:30:20 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	help_error()
+int	help_error(void)
 {
 	perror("minishell");
 	return (1);
@@ -101,3 +101,8 @@ void	handle_redir(t_list *list, int i)
 // bash-3.2$ echo "$x"kkkk"$x"
 
 //empty line  should reset exit status to 0
+
+// => minishell => "echo $?"
+// minishell:echo 0: command not found
+// => minishell => echo "$?"
+// 27
