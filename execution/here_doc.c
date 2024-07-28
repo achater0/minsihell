@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 11:49:08 by achater           #+#    #+#             */
-/*   Updated: 2024/07/26 15:30:07 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/28 16:28:49 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ int	set_here_doc(t_list **list, int i, int j, t_env *env_list)
 	int	prev;
 	int	k;
 
-	prev = -1;
-	k = 0;
 	while (++i < (*list)->nbr)
 	{
+		k = 0;
 		j = 0;
+		prev = -1;
 		while (list[i]->redir[j])
 		{
 			if (ft_strcmp(list[i]->redir[j], "<<") == 0)

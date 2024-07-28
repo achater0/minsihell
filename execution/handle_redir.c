@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/27 11:30:20 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/28 16:23:29 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	help_error(void)
 {
 	perror("minishell");
+	exit_status(1);
 	return (1);
 }
 
