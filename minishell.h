@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/27 11:49:39 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/29 13:31:17 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 
 int	g_status;
 
@@ -122,6 +123,8 @@ void	print_env(t_env *lst, int (*cmp)(char*, char*));
 int		key_exist(t_env *env, char *key);
 void	split_by_equal(char *str, char **key, char **value, int i);
 void	help_fct2(t_list **list, int fd[2], int pid[(*list)->nbr]);
+void	error_handling(char *cmd, char *str, int i, int x);
+
 //
 char	*ft_substr(char const *s, unsigned int start, int len);
 char	**safe_alloc(int count);

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/25 10:51:08 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/29 13:36:38 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
 	{
 		if (args[i][0] == '\0')
 		{
-			write(2, "minishell: export: `': not a valid identifier\n", 46);
+			write(2, "minishell: not a valid identifier\n", 46);
 			exit_status(1);
 			i++;
 			continue ;

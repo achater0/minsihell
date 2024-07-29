@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 11:23:28 by achater           #+#    #+#             */
-/*   Updated: 2024/07/25 10:50:32 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/29 13:30:22 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,13 @@ int	count_args0(char **args)
 	while (args[i])
 		i++;
 	return (i);
+}
+
+void	error_handling(char *cmd, char *str, int i, int x)
+{
+	write(2, "minishell:", 10);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, str, i);
+	write(2, "\n", 1);
+	exit(x);
 }
