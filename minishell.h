@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/30 11:33:54 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/30 11:48:39 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	print_env(t_env *lst, int (*cmp)(char*, char*));
 int		key_exist(t_env *env, char *key);
 void	split_by_equal(char *str, char **key, char **value, int i);
 void	help_fct2(t_list **list, int fd[2], int pid[(*list)->nbr]);
-void error_handling(char *cmd, char *str, int i, int x);
+void	error_handling(char *cmd, char *str, int i, int x);
 
 //
 char	*ft_substr(char const *s, unsigned int start, int len);
@@ -201,7 +201,6 @@ int		finnd_pipe(char **tab, int count);
 int		find_redir(char **tab, int count);
 char	*int_to_str(int num);
 void	signal_handler(int sig);
-void	print_tab(t_list **list);
 void	init_signals(void);
 void	setup_signal_handlers(void (*int_)(int), void (*quit_)(int));
 void	sig_handler_child(int sig);
