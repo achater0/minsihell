@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:29:29 by achater           #+#    #+#             */
-/*   Updated: 2024/07/29 13:33:15 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/29 17:29:59 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,26 @@ void	execute(char **cmds, char **envp, char *cmd)
 	int			i;
 
 	i = 0;
-	if (cmd[0] == '.' && cmd[1] == '\0')
-	{
-		write(2, "minishell: .: filename argument required\n", 41);
-		write(2, ".: usage: . filename [arguments]\n", 33);
-		exit(2);
-	}
-	stat(cmd, &sb);
-	if (S_ISDIR(sb.st_mode))
-		error_handling(cmd, ": is a directory\n", 16, 126);
-	if (access(cmd, X_OK) >= 0)
-		execve(cmd, cmds, envp);
-	else if (access(cmd, F_OK) >= 0)
-		error_handling(cmd, ": Permission denied\n", 21, 126);
-	if (ft_strchr(cmd, '/') != 0)
-		error_handling(cmd, ": No such file or directory\n", 30, 127);
 	path = find_path(cmd, envp);
 	if (execve(path, cmds, envp) < 0)
-		error_handling(cmd, ": command not found\n", 21, 127);
+	{
+		if (access(cmd, X_OK) >= 0)
+			execve(cmd, cmds, envp);
+		else if (access(cmd, F_OK) >= 0)
+			error_handling(cmd, ": Permission denied", 20, 126);
+		if (cmd[0] == '.' && cmd[1] == '\0')
+		{
+			write(2, "minishell: .: filename argument required\n", 41);
+			write(2, ".: usage: . filename [arguments]\n", 33);
+			exit(2);
+		}
+		stat(cmd, &sb);
+		if (S_ISDIR(sb.st_mode))
+			error_handling(cmd, ": is a directory", 16, 126);
+		if (ft_strchr(cmd, '/') != 0)
+			error_handling(cmd, ": No such file or directory", 29, 127);
+		error_handling(cmd, ": command not found", 20, 127);
+	}
 }
 
 char	**cmds_whit_args(char *cmd, char **args)

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/27 11:49:53 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/30 11:34:41 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	handle_one_cmd(t_list *cmds, t_env **env_list, int status)
 
 	pid = 0;
 	new_env = struct_to_char(*env_list);
-	handle_redir(cmds, 0);
+	handle_redir(cmds, 0, 0);
 	if (cmds->file_in < 0 || cmds->file_out < 0)
 	{
 		(cmds->file_in != 0) && (close(cmds->file_in));

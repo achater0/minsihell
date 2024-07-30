@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/28 16:23:29 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/30 11:33:27 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_redir_no_command(t_list *list, int i)
 	}
 }
 
-void	handle_redir(t_list *list, int i)
+void	handle_redir(t_list *list, int i, int x)
 {
 	if (list->redir == NULL)
 		return ;
@@ -84,13 +84,17 @@ void	handle_redir(t_list *list, int i)
 			if (redir_helper(list, i, 2) != 0)
 				return ;
 		if (ft_strcmp(list->redir[i], "<") == 0)
+		{
+			x = 1;
 			if (redir_helper(list, i, 3) != 0)
 				return ;
+		}
 		if (ft_strcmp(list->redir[i], "<<") == 0)
 		{
-			if (list->file_in > 3)
+			if (list->file_in > 2 && x == 1)
 				close(list->file_in);
 			list->file_in = list->here_doc;
+			x = 0;
 		}
 		i += 2;
 	}

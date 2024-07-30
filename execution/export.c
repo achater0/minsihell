@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 12:50:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/29 13:36:38 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/30 10:29:55 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	export_helper(char *key, char *value, t_env **env, t_env **tmp1)
 
 void	error_hendler(char *key, char *value, int i)
 {
-	write(2, "minishell: export: `': not a valid identifier\n", 46);
+	write(2, "minishell: export not a valid identifier\n", 41);
 	exit_status(1);
 	if (i == 1)
 		free(value);
@@ -80,13 +80,12 @@ void	export_whith_args(char **args, t_env **tmp1, int i, t_env **env)
 	char	*key;
 	char	*value;
 
-	while (args[++i])
+	while (args && args[++i])
 	{
 		if (args[i][0] == '\0')
 		{
-			write(2, "minishell: not a valid identifier\n", 46);
+			write(2, "minishell: not a valid identifier\n", 35);
 			exit_status(1);
-			i++;
 			continue ;
 		}
 		split_by_equal(args[i], &key, &value, 0);

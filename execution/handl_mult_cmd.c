@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 12:25:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/24 16:35:47 by achater          ###   ########.fr       */
+/*   Updated: 2024/07/30 11:34:03 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	help_fct(t_list **list, int i, int prev_pipe)
 
 void	child_of_mult_cmd(t_list **list, int i, int prev_pipe, int fd[2])
 {
-	handle_redir(list[i], 0);
+	handle_redir(list[i], 0, 0);
 	if (list[i]->file_in < 0 || list[i]->file_out < 0)
 		exit(EXIT_FAILURE);
 	if (i == 0)
