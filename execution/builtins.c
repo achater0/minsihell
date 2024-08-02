@@ -6,11 +6,17 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/07/27 11:49:44 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 11:28:26 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	e_fork(int x)
+{
+	if (x == 0)
+		perror("fork");
+}
 
 int	exit_status(int status)
 {

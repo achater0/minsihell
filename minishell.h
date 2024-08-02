@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/30 11:48:39 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 11:28:45 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int		key_exist(t_env *env, char *key);
 void	split_by_equal(char *str, char **key, char **value, int i);
 void	help_fct2(t_list **list, int fd[2], int pid[(*list)->nbr]);
 void	error_handling(char *cmd, char *str, int i, int x);
+void	e_fork(int x);
 
 //
 char	*ft_substr(char const *s, unsigned int start, int len);

@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 12:25:01 by achater           #+#    #+#             */
-/*   Updated: 2024/07/30 11:34:03 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 11:28:14 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@ void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe)
 {
 	int	fd[2];
 	int	*pid;
+	int	x;
 
+	x = 0;
 	pid = malloc(sizeof(int) * (*list)->nbr);
 	while (++i < (*list)->nbr)
 	{
@@ -86,8 +88,7 @@ void	handle_mult_cmd(t_list **list, t_env **env_list, int i, int prev_pipe)
 		if (pipe(fd) == -1)
 			error();
 		pid[i] = fork();
-		if (pid[i] == -1)
-			error();
+		(pid[i] == -1) && (close(fd[0]), close(fd[1]), e_fork(x), x = x + 1);
 		if (pid[i] == 0)
 		{
 			setup_signal_handlers(sig_handler_child, sig_handler_child);

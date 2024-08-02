@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 11:15:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/30 11:34:41 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 10:56:14 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ void	non_builtins(t_list *cmds, char **new_env, int status, int pid)
 {
 	ignore_signals();
 	pid = fork();
-	(pid == -1) && (error(), pid = -1);
+	if (pid < 0)
+	{
+		perror("fork");
+		free_struct(new_env);
+		return ;
+	}
 	if (pid == 0)
 	{
 		setup_signal_handlers(sig_handler_child, sig_handler_child);
