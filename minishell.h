@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/08/03 09:50:30 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 11:23:08 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void	split_by_equal(char *str, char **key, char **value, int i);
 void	help_fct2(t_list **list, int fd[2], int pid[(*list)->nbr]);
 void	error_handling(char *cmd, char *str, int i, int x);
 void	fork_error(int *x, int i, int *pid, int *fd);
+void	handle_access(char **cmds, char **envp, char *cmd, char *path);
+void	handle_directory(char **cmds, char **envp, char *cmd, char *path);
 
 //
 char	*ft_substr(char const *s, unsigned int start, int len);

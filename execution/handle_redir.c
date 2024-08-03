@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/08/02 12:50:20 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 11:26:14 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ void	handle_redir(t_list *list, int i, int x)
 // => minishell => echo "$?"
 // 27
 
-
-
 //..
 
 // ./ls
@@ -121,4 +119,3 @@ void	handle_redir(t_list *list, int i, int x)
 // echo ls > y
 //chmod +x y
 //./y
-
