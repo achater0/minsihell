@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 14:34:20 by achater           #+#    #+#             */
-/*   Updated: 2024/07/30 18:45:41 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 12:50:20 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,3 +111,14 @@ void	handle_redir(t_list *list, int i, int x)
 // minishell:echo 0: command not found
 // => minishell => echo "$?"
 // 27
+
+
+
+//..
+
+// ./ls
+
+// echo ls > y
+//chmod +x y
+//./y
+

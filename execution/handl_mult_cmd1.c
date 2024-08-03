@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 11:04:48 by achater           #+#    #+#             */
-/*   Updated: 2024/07/24 16:49:17 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/02 15:37:32 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,18 @@ void	exit_helper(t_list *cmds, int status)
 		else
 			exit_status(WEXITSTATUS(status));
 	}
+}
+
+void	fork_error(int *x, int i, int *pid, int *fd)
+{
+	int	j;
+
+	j = 0;
+	close(fd[0]);
+	close(fd[1]);
+	if (*x == 0)
+		perror("fork");
+	(*x)++;
+	while (j < i)
+		kill(pid[j++], SIGKILL);
 }

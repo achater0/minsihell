@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:22:31 by haalouan          #+#    #+#             */
-/*   Updated: 2024/08/02 11:28:45 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 09:50:30 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	ft_env(t_env *env_list, char **args);
 int		ft_is_number(char *str);
 int		ft_atoi(const char *str);
 void	ft_echo(char **args, int n, int j, int x);
-void	change_env_last_cmd(t_list *cmds, t_env **env_list);
 void	ft_cd(char **args, t_env *env_list);
 void	ft_env(t_env *env_list, char **args);
 void	ft_exit(char **args, t_list *cmds, int x, unsigned char i);
@@ -124,7 +123,7 @@ int		key_exist(t_env *env, char *key);
 void	split_by_equal(char *str, char **key, char **value, int i);
 void	help_fct2(t_list **list, int fd[2], int pid[(*list)->nbr]);
 void	error_handling(char *cmd, char *str, int i, int x);
-void	e_fork(int x);
+void	fork_error(int *x, int i, int *pid, int *fd);
 
 //
 char	*ft_substr(char const *s, unsigned int start, int len);

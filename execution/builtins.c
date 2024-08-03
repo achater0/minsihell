@@ -6,17 +6,11 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:28:38 by achater           #+#    #+#             */
-/*   Updated: 2024/08/02 11:28:26 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 09:50:19 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	e_fork(int x)
-{
-	if (x == 0)
-		perror("fork");
-}
 
 int	exit_status(int status)
 {
@@ -69,7 +63,6 @@ void	execution(t_list **list, t_env **env_list)
 {
 	(*list)->file_in = 0;
 	(*list)->file_out = 1;
-	change_env_last_cmd(*list, env_list);
 	if (set_here_doc(list, -1, 0, *env_list) == 1)
 		return ;
 	if ((*list)->nbr == 1)

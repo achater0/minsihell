@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 15:31:52 by achater           #+#    #+#             */
-/*   Updated: 2024/07/21 11:13:55 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 11:15:08 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,13 +110,22 @@ int	ft_atoi(const char *str)
 {
 	int	i;
 	int	x;
+	int	neg;
 
 	x = 0;
 	i = 0;
+	neg = 1;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
+	{
+		neg = -1;
+		i++;
+	}
 	while (str[i] >= 48 && str[i] <= 57)
 	{
 		x = (x * 10) + str[i] - '0';
 		i++;
 	}
-	return (x);
+	return (x * neg);
 }

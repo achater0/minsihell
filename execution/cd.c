@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 16:40:37 by achater           #+#    #+#             */
-/*   Updated: 2024/07/27 11:50:48 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/03 09:50:36 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,7 @@ int	change_value(t_env **env_list, char *value)
 	return (0);
 }
 
-void	change_env_last_cmd(t_list *cmds, t_env **env_list)
-{
-	char	*last_cmd;
-	int		i;
-	t_env	*tmp;
 
-	tmp = *env_list;
-	i = 0;
-	if (cmds->args == NULL)
-		last_cmd = cmds->cmd;
-	else
-	{
-		while (cmds->args[i])
-			i++;
-		last_cmd = cmds->args[i - 1];
-	}
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->key, "_") == 0)
-			change_value(&tmp, last_cmd);
-		tmp = tmp->next;
-	}
-}
 
 void	update_environment(t_env **env_list, char **oldpwd, char **newpwd)
 {
