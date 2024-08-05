@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand6.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 00:31:58 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/14 03:35:42 by haalouan         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:21:34 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_env_value(char *key, t_env *export_i)
 	tmp = export_i;
 	while (tmp)
 	{
-		if (!strcmp(tmp->key, key))
+		if (!ft_strcmp(tmp->key, key))
 		{
 			value = ft_strdup(tmp->value);
 			return (value);
