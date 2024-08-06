@@ -6,7 +6,7 @@
 /*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 16:38:45 by haalouan          #+#    #+#             */
-/*   Updated: 2024/07/29 13:45:55 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/06 09:21:40 by achater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	signal_handler(int sig)
 			return ;
 		}
 		printf("\n");
-		exit_status(1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
 		rl_redisplay();

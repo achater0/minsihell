@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achater <achater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: haalouan <haalouan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:56:59 by achater           #+#    #+#             */
-/*   Updated: 2024/07/24 16:48:04 by achater          ###   ########.fr       */
+/*   Updated: 2024/08/05 22:03:15 by haalouan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	handle_sigint(int signum)
 
 	if (signum == SIGINT)
 	{
+		exit_status(1);
 		g_status = 1;
 		printf("\n");
 		rl_on_new_line();
